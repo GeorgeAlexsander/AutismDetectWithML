@@ -19,7 +19,7 @@ import pandas as pd
 import os
 import urllib.request as urlreq
 import matplotlib.pyplot as plt
-
+from tqdm import tqdm
 
 def download_file(url: str, filename: str, debug: bool = False) -> None:
     """
@@ -33,7 +33,6 @@ def download_file(url: str, filename: str, debug: bool = False) -> None:
     Returns:
         None
     """
-    # Obtém o diretório atual
     current_dir = os.curdir
     full_path = os.path.join(current_dir, filename)
 
@@ -49,14 +48,15 @@ def download_file(url: str, filename: str, debug: bool = False) -> None:
 def load_image(image_path: str, debug: bool = False) -> np.ndarray:
     """
     Carrega uma imagem de um caminho especificado.
-
+    
     Args:
         image_path (str): Caminho do arquivo da imagem.
         debug (bool): Se True, exibe informações de debug.
-
+    
     Returns:
         np.ndarray: A imagem lida.
     """
+
     if os.path.exists(image_path):
         if debug:
             print(f"Imagem {image_path} carregada com sucesso.")
@@ -141,17 +141,16 @@ def plot_landmarks(image: np.ndarray, faces: np.ndarray, landmarks: list, debug:
             cv2.circle(image_blank, (int(x), int(y)), 1, (255, 0, 0), 1)
             cv2.putText(image_blank, str(i + 1), (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 0), 1)
 
-    # Exibindo a imagem resultante com os marcos
-    plt.imshow(image_blank)
-    plt.axis("off")
-    plt.title("Marcos Faciais")
-    plt.show()
-
+    # Exibindo a imagem resultante com os marcos mediante diretiva
     if debug:
+        plt.imshow(image_blank)
+        plt.axis("off")
+        plt.title("Marcos Faciais")
+        plt.show()
         print("Landmarks plotados com sucesso.")
 
 
-def save_landmarks_to_csv(landmarks: list, image_num: int, output_file: str, debug: bool = False) -> None:
+def save_landmarks_to_csv(landmarks: list, image_num: int, class_label: int, output_file: str, debug: bool = False) -> None:
     """
     Salva os marcos faciais detectados em um arquivo CSV, acumulando todos os resultados.
 
@@ -166,11 +165,11 @@ def save_landmarks_to_csv(landmarks: list, image_num: int, output_file: str, deb
     """
     data = []
     for landmark in landmarks:
-        flattened_landmark = [image_num] + landmark.flatten().tolist()
+        flattened_landmark = [image_num, class_label] + landmark.flatten().tolist()
         data.append(flattened_landmark)
 
     num_points = 68  # Número de pontos faciais padrão
-    column_names = ['amostra'] + [f'X{i+1}' for i in range(num_points)] + [f'Y{i+1}' for i in range(num_points)]
+    column_names = ['amostra', 'class'] + [f'X{i+1}' for i in range(num_points)] + [f'Y{i+1}' for i in range(num_points)]
 
     df = pd.DataFrame(data, columns=column_names)
 
@@ -184,7 +183,7 @@ def save_landmarks_to_csv(landmarks: list, image_num: int, output_file: str, deb
             print(f"Adicionado marcos faciais da imagem {image_num} ao arquivo {output_file}.")
 
 
-def process_images_in_folder(folder_path: str, haarcascade: str, LBFmodel: str, output_csv: str, debug: bool = False) -> None:
+def process_images_in_folder(folder_path: str, haarcascade: str, LBFmodel: str, output_csv: str, class_label: int, debug: bool = False) -> None:
     """
     Processa todas as imagens em uma pasta, detectando faces e marcos faciais,
     e salvando os resultados em um único CSV.
@@ -201,7 +200,7 @@ def process_images_in_folder(folder_path: str, haarcascade: str, LBFmodel: str, 
     """
     image_files = [f for f in os.listdir(folder_path) if f.endswith(('.jpg', '.png', '.jpeg'))]
 
-    for i, image_file in enumerate(image_files):
+    for i, image_file in enumerate(tqdm(image_files, desc=f"Processando {class_label}")):
         image_path = os.path.join(folder_path, image_file)
         if debug:
             print(f"\nProcessando imagem {i + 1}: {image_file}")
@@ -225,8 +224,8 @@ def process_images_in_folder(folder_path: str, haarcascade: str, LBFmodel: str, 
             # Plotar os landmarks
             plot_landmarks(image_rgb, faces, landmarks, debug=debug)
 
-            # Salvar os marcos em um único CSV
-            save_landmarks_to_csv(landmarks, i + 1, output_csv, debug=debug)
+            # Salvar os marcos em um CSV
+            save_landmarks_to_csv(landmarks, i + 1, class_label, output_csv, debug=debug)
 
         except Exception as e:
             if debug:
@@ -234,9 +233,6 @@ def process_images_in_folder(folder_path: str, haarcascade: str, LBFmodel: str, 
 
 
 def main():
-    # Caminho da pasta com as imagens
-    folder_path = '../data/raw/no_autistic'
-
     # URLs para os arquivos de detecção
     haarcascade_url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_alt2.xml"
     LBFmodel_url = "https://github.com/kurnianggoro/GSOC2017/raw/master/data/lbfmodel.yaml"
@@ -253,11 +249,19 @@ def main():
     download_file(haarcascade_url, haarcascade, debug=True)
     download_file(LBFmodel_url, LBFmodel, debug=True)
 
-    # Caminho do CSV de saída
-    output_csv = 'landmarks_all_images.csv'
+    # Caminho para os arquivos de saída
+    output_folder = '../data/preprocessed_landmark'
+    os.makedirs(output_folder, exist_ok=True)
 
-    # Processar todas as imagens na pasta
-    process_images_in_folder(folder_path, haarcascade, LBFmodel, output_csv, debug=True)
+    # Processar imagens de no_autism
+    output_csv_no_autism = os.path.join(output_folder, 'landmarks_no_autism.csv')
+    folder_path_no_autism = '../data/raw/no_autistic'
+    process_images_in_folder(folder_path_no_autism, haarcascade, LBFmodel, output_csv_no_autism, class_label=0, debug=False)
+
+    # Processar imagens de with_autism
+    output_csv_with_autism = os.path.join(output_folder, 'landmarks_with_autism.csv')
+    folder_path_with_autism = '../data/raw/with_autistic'
+    process_images_in_folder(folder_path_with_autism, haarcascade, LBFmodel, output_csv_with_autism, class_label=1, debug=False)
 
 
 if __name__ == "__main__":
