@@ -20,7 +20,9 @@ import sys
 sys.path.insert(0, os.path.abspath('../src'))
 
 extensions = [
-                'sphinx.ext.autodoc',
+               'sphinx.ext.autodoc',
+               'sphinx.ext.napoleon',  # Para o padrão Google de docstrings
+               'sphinx.ext.viewcode',  # Adiciona links para o código-fonte das funções/classes na documentação
              ]
 
 templates_path = ['_templates']
