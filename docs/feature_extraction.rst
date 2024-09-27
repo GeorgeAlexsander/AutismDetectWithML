@@ -1,7 +1,7 @@
-feature\_extraction\_demo module
+feature\_extraction module
 ================================
 
-.. automodule:: feature_extraction_demo
+.. automodule:: feature_extraction
    :members:
    :undoc-members:
    :show-inheritance:
