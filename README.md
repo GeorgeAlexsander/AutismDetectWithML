@@ -44,7 +44,7 @@ project_root/
 └── setup.py                       # Configuração do pacote
 ```
 
-# 🧠 Topologia do Modelo de Machine Learning
+## 🧠 Topologia do Modelo de Machine Learning
 
 ## ⚙️ Estrutura do Modelo
 
