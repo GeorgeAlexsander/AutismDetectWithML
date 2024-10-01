@@ -105,7 +105,7 @@ def detect_faces(
 
 
 def detect_landmarks(
-    image_gray: np.ndarray, faces: np.ndarray, lbf_model: str, debug: bool = False
+    image_gray: np.ndarray, faces: np.ndarray, landmark_detector: cv2.face.Facemark, debug: bool = False
 ) -> list:
     """
     Detecta marcos faciais em uma imagem.
@@ -113,28 +113,20 @@ def detect_landmarks(
     Args:
         image_gray (np.ndarray): Imagem em escala de cinza.
         faces (np.ndarray): Coordenadas das faces detectadas.
-        LBFmodel (str): Caminho do modelo de detecção de marcos faciais.
+        landmark_detector (cv2.face.Facemark): Detector de marcos faciais já carregado.
         debug (bool): Se True, exibe informações de debug.
 
     Returns:
         list: Lista de marcos faciais, onde cada conjunto contém as coordenadas dos marcos.
-
-    Raises:
-        FileNotFoundError: Se o modelo de marcos faciais não for encontrado.
+        
     """
 
-    if not os.path.exists(lbf_model):
-        raise FileNotFoundError(f"Modelo de marcos faciais não encontrado: {lbf_model}")
-
-    landmark_detector = cv2.face.createFacemarkLBF()
-    landmark_detector.loadModel(lbf_model)
     _, landmarks = landmark_detector.fit(image_gray, faces)
 
     if debug:
         print(f"Marcos faciais detectados: {landmarks}")
 
     return landmarks
-
 
 def plot_landmarks(image: np.ndarray, landmarks: list, debug: bool = False) -> None:
     """
@@ -249,7 +241,19 @@ def process_images_in_folder(
 
     Returns:
         None
+
+    Raises:
+        FileNotFoundError: Se o classificador Haarcascade ou o modelo de marcos faciais não forem encontrados.
+        ValueError: Se não houver faces detectadas em uma imagem.
+        Exception: Para qualquer outro erro que possa ocorrer durante o processamento das imagens.
+    
     """
+    
+    if not os.path.exists(lbf_model):
+        raise FileNotFoundError(f"Modelo de marcos faciais não encontrado: {lbf_model}")
+
+    landmark_detector = cv2.face.createFacemarkLBF()
+    landmark_detector.loadModel(lbf_model)
 
     image_files = [
         f for f in os.listdir(folder_path) if f.endswith((".jpg", ".png", ".jpeg"))
@@ -278,7 +282,7 @@ def process_images_in_folder(
                 continue
 
             # Detectar marcos faciais
-            landmarks = detect_landmarks(image_gray, faces, lbf_model, debug=debug)
+            landmarks = detect_landmarks(image_gray, faces, landmark_detector, debug=debug)
 
             # Plotar os landmarks
             plot_landmarks(image_rgb, landmarks, debug=debug)
@@ -337,6 +341,10 @@ def main():
     # Processar imagens de no_autism
     output_csv_no_autism = os.path.join(output_folder, "landmarks_no_autism.csv")
     folder_path_no_autism = "../data/raw/no_autistic"
+    # Limpa o diretório deletando o CSV
+    if os.path.isfile(output_csv_no_autism): 
+        os.remove(output_csv_no_autism)
+    
     process_images_in_folder(
         folder_path_no_autism,
         haarcascade,
@@ -349,6 +357,10 @@ def main():
     # Processar imagens de with_autism
     output_csv_with_autism = os.path.join(output_folder, "landmarks_with_autism.csv")
     folder_path_with_autism = "../data/raw/with_autistic"
+    # Limpa o diretório deletando o CSV
+    if os.path.isfile(output_csv_with_autism): 
+        os.remove(output_csv_with_autism)
+    
     process_images_in_folder(
         folder_path_with_autism,
         haarcascade,
