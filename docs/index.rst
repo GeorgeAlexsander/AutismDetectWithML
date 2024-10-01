@@ -6,16 +6,11 @@
 AutismDetectWithML documentation
 ================================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+O projeto AutismDetectWithML é uma iniciativa dedicada à detecção de autismo utilizando técnicas de aprendizado de máquina. O objetivo é fornecer uma ferramenta eficaz que ajude na identificação precoce de sinais associados ao autismo.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-   modules
    
 Indices and Tables
 =====================
