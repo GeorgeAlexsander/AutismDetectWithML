@@ -25,7 +25,8 @@ extensions = [
     'ansys_sphinx_theme.extension.linkcode',
 ]
 
-autoapi_dirs = ['../src']  # Specify the directories for autoapi to scan
+autoapi_dirs = ['../src',
+                '../tests']  # Specify the directories for autoapi to scan
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
