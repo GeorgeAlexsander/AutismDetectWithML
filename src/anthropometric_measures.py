@@ -91,19 +91,18 @@ def calculate_distances(df: pd.DataFrame) -> pd.DataFrame:
         >>> distances_df = calculate_distances(df)
     """
     landmarks = {
-        "Trichion": ("X1", "Y1"),
-        "Glabella": ("X3", "Y3"),
-        "Upper Philtrum": ("X5", "Y5"),
-        "Menton": ("X7", "Y7"),
-        "Lower Philtrum": ("X9", "Y9"),
-        "Endo Canthus Left": ("X11", "Y11"),
-        "Endo Canthus Right": ("X13", "Y13"),
-        "Exo Canthus Left": ("X15", "Y15"),
-        "Exo Canthus Right": ("X17", "Y17"),
-        "Alare Left": ("X19", "Y19"),
-        "Alare Right": ("X21", "Y21"),
-        "Cheilion Left": ("X23", "Y23"),
-        "Cheilion Right": ("X25", "Y25"),
+        "Glabella": ("X22", "Y22", "X23", "Y23"),  # Precisa-se calcular a média dos pontos
+        "Upper Philtrum": ("X34", "Y34"),
+        "Menton": ("X9", "Y9"),
+        "Lower Philtrum": ("X52", "Y52"),
+        "Endo Canthus Left": ("X43", "Y43"),
+        "Endo Canthus Right": ("X40", "Y40"),
+        "Exo Canthus Left": ("X37", "Y37"),
+        "Exo Canthus Right": ("X46", "Y46"),
+        "Alare Left": ("X32", "Y32"),
+        "Alare Right": ("X36", "Y36"),
+        "Cheilion Left": ("X49", "Y49"),
+        "Cheilion Right": ("X55", "Y55"),
     }
 
     # Inicializando uma lista para armazenar os resultados
@@ -114,13 +113,13 @@ def calculate_distances(df: pd.DataFrame) -> pd.DataFrame:
         sample = row['amostra']
         class_label = row['class']
 
+        # Calculando a posição da Glabella como a média das sobrancelhas
+        glabella_x = (row[landmarks["Glabella"][0]] + row[landmarks["Glabella"][2]]) / 2
+        glabella_y = (row[landmarks["Glabella"][1]] + row[landmarks["Glabella"][3]]) / 2
+
         distances = {
-            "upper_facial_height": calculate_euclidean_distance(
-                np.array([row[landmarks["Trichion"][0]], row[landmarks["Trichion"][1]]]),
-                np.array([row[landmarks["Glabella"][0]], row[landmarks["Glabella"][1]]])
-            ),
             "middle_facial_height": calculate_euclidean_distance(
-                np.array([row[landmarks["Glabella"][0]], row[landmarks["Glabella"][1]]]),
+                np.array([glabella_x, glabella_y]),
                 np.array([row[landmarks["Upper Philtrum"][0]], row[landmarks["Upper Philtrum"][1]]])
             ),
             "lower_facial_height": calculate_euclidean_distance(
