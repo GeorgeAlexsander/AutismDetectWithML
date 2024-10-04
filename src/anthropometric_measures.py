@@ -16,6 +16,7 @@ Criado em: Sexta-feira, dia 27 de Setembro de 2024
 import pandas as pd
 import numpy as np
 import os
+from scipy.spatial import distance
 
 
 def load_csv(file_path: str) -> pd.DataFrame:
@@ -57,7 +58,7 @@ def calculate_euclidean_distance(point1: np.ndarray, point2: np.ndarray) -> floa
         >>> calculate_euclidean_distance(point_a, point_b)
         5.0
     """
-    return np.linalg.norm(point1 - point2)
+    return distance.euclidean(point1, point2)
 
 
 def save_results_to_csv(results: pd.DataFrame, output_file: str) -> None:
@@ -77,21 +78,22 @@ def save_results_to_csv(results: pd.DataFrame, output_file: str) -> None:
     results.to_csv(output_file, index=False)
 
 
-def calculate_distances(df: pd.DataFrame) -> pd.DataFrame:
+def calculate_distances(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
     """
     Calcula as distâncias antropométricas a partir do DataFrame.
 
     Args:
         df (pd.DataFrame): DataFrame contendo as coordenadas dos marcos faciais.
+        debug (bool): Se True, imprime os arrays de pontos usados para calcular as distâncias.
 
     Returns:
         pd.DataFrame: DataFrame contendo as distâncias calculadas para cada amostra.
 
     Examples:
-        >>> distances_df = calculate_distances(df)
+        >>> distances_df = calculate_distances(df, debug=True)
     """
     landmarks = {
-        "Glabella": ("X22", "Y22", "X23", "Y23"),  # Precisa-se calcular a média dos pontos
+        "Glabella": ("X22", "Y22", "X23", "Y23"),
         "Upper Philtrum": ("X34", "Y34"),
         "Menton": ("X9", "Y9"),
         "Lower Philtrum": ("X52", "Y52"),
@@ -105,57 +107,78 @@ def calculate_distances(df: pd.DataFrame) -> pd.DataFrame:
         "Cheilion Right": ("X55", "Y55"),
     }
 
-    # Inicializando uma lista para armazenar os resultados
     results_list = []
 
-    # Calculando as distâncias para cada amostra
     for index, row in df.iterrows():
         sample = row['amostra']
         class_label = row['class']
 
-        # Calculando a posição da Glabella como a média das sobrancelhas
         glabella_x = (row[landmarks["Glabella"][0]] + row[landmarks["Glabella"][2]]) / 2
         glabella_y = (row[landmarks["Glabella"][1]] + row[landmarks["Glabella"][3]]) / 2
 
         distances = {
-            "middle_facial_height": calculate_euclidean_distance(
-                np.array([glabella_x, glabella_y]),
-                np.array([row[landmarks["Upper Philtrum"][0]], row[landmarks["Upper Philtrum"][1]]])
-            ),
-            "lower_facial_height": calculate_euclidean_distance(
-                np.array([row[landmarks["Upper Philtrum"][0]], row[landmarks["Upper Philtrum"][1]]]),
-                np.array([row[landmarks["Menton"][0]], row[landmarks["Menton"][1]]])
-            ),
-            "philtrum": calculate_euclidean_distance(
-                np.array([row[landmarks["Upper Philtrum"][0]], row[landmarks["Upper Philtrum"][1]]]),
-                np.array([row[landmarks["Lower Philtrum"][0]], row[landmarks["Lower Philtrum"][1]]])
-            ),
-            "intercanthal_width": calculate_euclidean_distance(
-                np.array([row[landmarks["Endo Canthus Left"][0]], row[landmarks["Endo Canthus Left"][1]]]),
-                np.array([row[landmarks["Endo Canthus Right"][0]], row[landmarks["Endo Canthus Right"][1]]])
-            ),
-            "biocular_width": calculate_euclidean_distance(
-                np.array([row[landmarks["Exo Canthus Left"][0]], row[landmarks["Exo Canthus Left"][1]]]),
-                np.array([row[landmarks["Exo Canthus Right"][0]], row[landmarks["Exo Canthus Right"][1]]])
-            ),
-            "nasal_width": calculate_euclidean_distance(
-                np.array([row[landmarks["Alare Left"][0]], row[landmarks["Alare Left"][1]]]),
-                np.array([row[landmarks["Alare Right"][0]], row[landmarks["Alare Right"][1]]])
-            ),
-            "mouth_width": calculate_euclidean_distance(
-                np.array([row[landmarks["Cheilion Left"][0]], row[landmarks["Cheilion Left"][1]]]),
-                np.array([row[landmarks["Cheilion Right"][0]], row[landmarks["Cheilion Right"][1]]])
-            ),
+            "middle_facial_height": None,
+            "lower_facial_height": None,
+            "philtrum": None,
+            "intercanthal_width": None,
+            "biocular_width": None,
+            "nasal_width": None,
+            "mouth_width": None,
         }
+        
+        debug = True
+        # Calculando as distâncias e imprimindo os arrays se debug for True
+        if debug and index == 0:  # apenas para o primeiro elemento
+            print("Calculando distâncias para a amostra:", sample)
 
-        # Adiciona os resultados à lista
+        # middle_facial_height
+        middle_facial_height_points = np.array([glabella_x, glabella_y]), np.array([row[landmarks["Upper Philtrum"][0]], row[landmarks["Upper Philtrum"][1]]])
+        distances["middle_facial_height"] = calculate_euclidean_distance(*middle_facial_height_points)
+        if debug and index == 0:
+            print("middle_facial_height:", middle_facial_height_points)
+
+        # lower_facial_height
+        lower_facial_height_points = np.array([row[landmarks["Upper Philtrum"][0]], row[landmarks["Upper Philtrum"][1]]]), np.array([row[landmarks["Menton"][0]], row[landmarks["Menton"][1]]])
+        distances["lower_facial_height"] = calculate_euclidean_distance(*lower_facial_height_points)
+        if debug and index == 0:
+            print("lower_facial_height:", lower_facial_height_points)
+
+        # philtrum
+        philtrum_points = np.array([row[landmarks["Upper Philtrum"][0]], row[landmarks["Upper Philtrum"][1]]]), np.array([row[landmarks["Lower Philtrum"][0]], row[landmarks["Lower Philtrum"][1]]])
+        distances["philtrum"] = calculate_euclidean_distance(*philtrum_points)
+        if debug and index == 0:
+            print("philtrum:", philtrum_points)
+
+        # intercanthal_width
+        intercanthal_width_points = np.array([row[landmarks["Endo Canthus Left"][0]], row[landmarks["Endo Canthus Left"][1]]]), np.array([row[landmarks["Endo Canthus Right"][0]], row[landmarks["Endo Canthus Right"][1]]])
+        distances["intercanthal_width"] = calculate_euclidean_distance(*intercanthal_width_points)
+        if debug and index == 0:
+            print("intercanthal_width:", intercanthal_width_points)
+
+        # biocular_width
+        biocular_width_points = np.array([row[landmarks["Exo Canthus Left"][0]], row[landmarks["Exo Canthus Left"][1]]]), np.array([row[landmarks["Exo Canthus Right"][0]], row[landmarks["Exo Canthus Right"][1]]])
+        distances["biocular_width"] = calculate_euclidean_distance(*biocular_width_points)
+        if debug and index == 0:
+            print("biocular_width:", biocular_width_points)
+
+        # nasal_width
+        nasal_width_points = np.array([row[landmarks["Alare Left"][0]], row[landmarks["Alare Left"][1]]]), np.array([row[landmarks["Alare Right"][0]], row[landmarks["Alare Right"][1]]])
+        distances["nasal_width"] = calculate_euclidean_distance(*nasal_width_points)
+        if debug and index == 0:
+            print("nasal_width:", nasal_width_points)
+
+        # mouth_width
+        mouth_width_points = np.array([row[landmarks["Cheilion Left"][0]], row[landmarks["Cheilion Left"][1]]]), np.array([row[landmarks["Cheilion Right"][0]], row[landmarks["Cheilion Right"][1]]])
+        distances["mouth_width"] = calculate_euclidean_distance(*mouth_width_points)
+        if debug and index == 0:
+            print("mouth_width:", mouth_width_points)
+
         results_list.append({
             "samples": sample,
             "class": class_label,
             **distances
         })
 
-    # Converte a lista de resultados em um DataFrame
     return pd.DataFrame(results_list)
 
 
