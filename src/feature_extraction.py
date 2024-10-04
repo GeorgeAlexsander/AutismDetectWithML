@@ -193,18 +193,25 @@ def save_landmarks_to_csv(
 
     data = []
     for landmark in landmarks:
-        flattened_landmark = [image_num, class_label] + landmark.flatten().tolist()
+        # Começando com o número da imagem e o rótulo da classe
+        flattened_landmark = [image_num, class_label]
+        
+        # Adicionando os pontos de forma intercalada X, Y
+        for point in landmark[0]:
+            flattened_landmark.append(point[0])  # X
+            flattened_landmark.append(point[1])  # Y
+        
         data.append(flattened_landmark)
 
-    num_points = 68  # Número de pontos faciais padrão
-    column_names = (
-        ["amostra", "class"]
-        + [f"X{i+1}" for i in range(num_points)]
-        + [f"Y{i+1}" for i in range(num_points)]
-    )
+    # Criando o DataFrame com as colunas apropriadas
+    column_names = ["amostra", "class"]
+    for i in range(68):
+        column_names.append(f"X{i + 1}")
+        column_names.append(f"Y{i + 1}")
 
     df = pd.DataFrame(data, columns=column_names)
 
+    # Salvando o DataFrame no CSV
     if not os.path.exists(output_file):
         df.to_csv(output_file, index=False)
         if debug:
