@@ -99,12 +99,12 @@ def calculate_distances(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
         "Lower Philtrum": ("X52", "Y52"),
         "Endo Canthus Left": ("X43", "Y43"),
         "Endo Canthus Right": ("X40", "Y40"),
-        "Exo Canthus Left": ("X37", "Y37"),
-        "Exo Canthus Right": ("X46", "Y46"),
-        "Alare Left": ("X32", "Y32"),
-        "Alare Right": ("X36", "Y36"),
-        "Cheilion Left": ("X49", "Y49"),
-        "Cheilion Right": ("X55", "Y55"),
+        "Exo Canthus Left": ("X46", "Y46"),
+        "Exo Canthus Right": ("X37", "Y37"),
+        "Alare Left": ("X36", "Y36"),
+        "Alare Right": ("X32", "Y32"),
+        "Cheilion Left": ("X55", "Y55"),
+        "Cheilion Right": ("X49", "Y49"),
     }
 
     results_list = []

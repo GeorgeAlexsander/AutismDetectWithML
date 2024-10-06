@@ -171,9 +171,11 @@ Esse comando garantirá que todas as bibliotecas necessárias para rodar o proje
 **Importante**: O Sphinx precisa conseguir acessar e executar o código que está na pasta do projeto. No projeto temos os códigos-fonte organizados em uma subpasta, como `src/`, então é necessário realizar a instalação das dependências também na pasta onde o código fonte se encontra. Isso é crucial porque o Sphinx utiliza a extensão `autodoc`, que permite a geração automática de documentação a partir das docstrings do código. Para que o `autodoc` funcione corretamente, ele precisa acessar os módulos e suas respectivas dependências, garantindo assim que a documentação gerada reflita com precisão o funcionamento do código.
 
 Para instalar novas dependência, no Windows, pode-se:
+
 ```bash
 venv\Scripts\activate
 ```
+
 Deste modo ao utilizar linhas de  comando para modificar os pacotes, irá modificar o virtual environment.
 
 ---
