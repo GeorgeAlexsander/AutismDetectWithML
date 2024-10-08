@@ -203,6 +203,10 @@ def main(input_csv_no_autism: str, input_csv_with_autism: str, output_csv_no_aut
     df_no_autism = load_csv(input_csv_no_autism)
     df_with_autism = load_csv(input_csv_with_autism)
 
+    # Excluir linhas com valores negativos em qualquer coluna
+    df_no_autism = df_no_autism[(df_no_autism >= 0).all(axis=1)]
+    df_with_autism = df_with_autism[(df_with_autism >= 0).all(axis=1)]
+
     # Calcular as distâncias para cada grupo
     results_no_autism = calculate_distances(df_no_autism)
     results_with_autism = calculate_distances(df_with_autism)
