@@ -255,8 +255,8 @@ def main():
     os.makedirs(output_folder, exist_ok=True)
 
     # Processar imagens de no_autism
-    output_csv_no_autism = os.path.join(output_folder, "face_mesh_no_autism.csv")
-    folder_path_no_autism = "../data/raw/no_autistic"
+    output_csv_no_autism = os.path.join(output_folder, "face_mesh_no_autism_2.0.csv")
+    folder_path_no_autism = "../data/raw/processed_no_autistic"
     
     if os.path.isfile(output_csv_no_autism): 
         os.remove(output_csv_no_autism)
@@ -269,8 +269,8 @@ def main():
     )
 
     # Processar imagens de with_autism
-    output_csv_with_autism = os.path.join(output_folder, "face_mesh_with_autism.csv")
-    folder_path_with_autism = "../data/raw/with_autistic"
+    output_csv_with_autism = os.path.join(output_folder, "face_mesh_with_autism_2.0.csv")
+    folder_path_with_autism = "../data/raw/processed_with_autistic"
     
     if os.path.isfile(output_csv_with_autism): 
         os.remove(output_csv_with_autism)
