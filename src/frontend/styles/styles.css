@@ -1,0 +1,107 @@
+/* src/frontend/styles/styles.css */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #a0c4ff, #c9e4ff); /* Gradiente de fundo */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Tela cheia */
+    overflow: hidden; /* Evitar rolagem */
+  }
+  
+  .container {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 40px;
+    width: 100%;
+    max-width: 600px; /* Tamanho fixo */
+    min-height: 400px; /* Altura mínima para uniformizar o layout */
+    text-align: center;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Transição suave */
+    opacity: 1;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    color: #1a2a6c; /* Azul escuro para harmonizar com o fundo */
+    margin-bottom: 20px;
+  }
+  
+  p {
+    font-size: 1rem;
+    color: #555; /* Cinza suave para o texto */
+  }
+  
+  button {
+    padding: 12px 25px;
+    background-color: #1a2a6c; /* Azul escuro para harmonizar com o título */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #142051; /* Efeito hover mais escuro */
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  input[type="file"] {
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .animation {
+    font-size: 50px;
+    margin: 20px 0;
+  }
+  
+  .processing-container, .result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .fade-in {
+    animation: fadeIn 1s ease forwards; /* Animação de fade-in */
+  }
+  
+  .fade-out {
+    animation: fadeOut 0.5s ease forwards; /* Animação de fade-out */
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+  
