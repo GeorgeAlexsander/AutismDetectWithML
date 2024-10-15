@@ -8,7 +8,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh; /* Tela cheia */
-    overflow: hidden; /* Evitar rolagem */
+    overflow: hidden;
   }
   
   .container {
@@ -18,7 +18,7 @@ body {
     padding: 40px;
     width: 100%;
     max-width: 600px; /* Tamanho fixo */
-    min-height: 400px; /* Altura mínima para uniformizar o layout */
+    min-height: 450px; /* Altura mínima para uniformizar o layout */
     text-align: center;
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Transição suave */
     opacity: 1;
@@ -32,12 +32,12 @@ body {
   
   p {
     font-size: 1rem;
-    color: #555; /* Cinza suave para o texto */
+    color: #555; /* Texto cinza suave */
   }
   
   button {
     padding: 12px 25px;
-    background-color: #1a2a6c; /* Azul escuro para harmonizar com o título */
+    background-color: #1a2a6c; /* Azul escuro */
     color: white;
     border: none;
     border-radius: 5px;
@@ -57,51 +57,72 @@ body {
   }
   
   input[type="file"] {
-    margin-top: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    display: none; /* Oculta o input padrão */
   }
   
-  .animation {
-    font-size: 50px;
-    margin: 20px 0;
-  }
-  
-  .processing-container, .result-container {
+  .upload-area {
+    border: 2px solid #a0c4ff; /* Cor da borda igual ao degradê */
+    border-radius: 12px;
+    width: 100%;
+    max-width: 300px; /* Diminuímos a largura */
+    height: 250px; /* Mantemos a altura para não distorcer a área */
+    margin: 20px auto;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    background-color: #f0f8ff; /* Fundo leve */
   }
   
-  .fade-in {
-    animation: fadeIn 1s ease forwards; /* Animação de fade-in */
+  .upload-area img {
+    max-width: 150px; /* Aumentamos a imagem de pré-visualização */
+    max-height: 150px; /* Evitar que a imagem ultrapasse a área de upload */
+    opacity: 0.9;
+    border-radius: 10px; /* Adiciona leve arredondamento à imagem */
+  }
+
+  /* Estilo geral do botão */
+button {
+  padding: 12px 25px;
+  background-color: #1a2a6c; /* Azul escuro */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #142051; /* Efeito hover mais escuro */
+}
+
+/* Estilo do botão desativado */
+button:disabled {
+  background-color: #ccc; /* Cinza para mostrar que está desativado */
+  cursor: not-allowed; /* Cursor de não permitido */
+  opacity: 0.6; /* Transparência para indicar que está desativado */
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Espaço entre os botões */
+}
+  
+  button#choose-file-btn {
+    background-color: #2a9d8f;
   }
   
-  .fade-out {
-    animation: fadeOut 0.5s ease forwards; /* Animação de fade-out */
+  button#choose-file-btn:hover {
+    background-color: #21867a;
   }
   
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  button#continue-btn {
+    background-color: #1a2a6c;
   }
   
-  @keyframes fadeOut {
-    from {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(20px);
-    }
+  button#continue-btn:hover {
+    background-color: #142051;
   }
   
