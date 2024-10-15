@@ -10,7 +10,7 @@ const Processing: React.FC = () => {
     const timer = setTimeout(() => {
       setLoading(false);
       navigate('/result');
-    }, 3000); // Simula 3 segundos de processamento
+    }, 5000); // Simula 5 segundos de processamento
     return () => clearTimeout(timer);
   }, [navigate]);
 
