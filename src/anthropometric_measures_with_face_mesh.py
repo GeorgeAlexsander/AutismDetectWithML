@@ -211,8 +211,8 @@ def main(input_csv_no_autism: str, input_csv_with_autism: str, output_csv_no_aut
     save_results_to_csv(results_with_autism, output_csv_with_autism)
 
 if __name__ == "__main__":
-    input_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_no_autism_3.0.csv"  # caminho do CSV sem autismo
-    input_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_with_autism_3.0.csv"  # caminho do CSV com autismo
-    output_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_distances_no_autism_3.0.csv"  # caminho do CSV de saída sem autismo
-    output_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_distances_with_autism_3.0.csv"  # caminho do CSV de saída com autismo
+    input_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_no_autism_1.0.csv"  # caminho do CSV sem autismo
+    input_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_with_autism_1.0.csv"  # caminho do CSV com autismo
+    output_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_distances_no_autism_1.0.csv"  # caminho do CSV de saída sem autismo
+    output_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_distances_with_autism_1.0.csv"  # caminho do CSV de saída com autismo
     main(input_csv_no_autism_path, input_csv_with_autism_path, output_csv_no_autism_path, output_csv_with_autism_path)

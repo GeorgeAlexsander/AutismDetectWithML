@@ -1,24 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import PacmanLoader from 'react-spinners/PacmanLoader'; // Importa o PacmanLoader
 
 const Processing: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading, setLoading] = useState(true); // Estado de carregamento
 
   useEffect(() => {
+    // Obtém os dados de faceMesh do estado da navegação
     const faceMeshData = location.state?.faceMeshData;
 
     // Verificação se faceMeshData existe
     if (!faceMeshData) {
       console.error('Dados de faceMesh ausentes');
       navigate('/result', { state: { prediction: null, error: 'Dados de faceMesh ausentes.' } });
-      return;  // Cancela a execução se faceMeshData estiver ausente
+      return; // Cancela a execução se faceMeshData estiver ausente
     }
 
     // Função para fazer a requisição à API de predição
     const fetchPrediction = async () => {
       try {
+        setLoading(true); // Ativa o estado de carregamento
+
         const response = await fetch('http://localhost:5000/predict-autism', {
           method: 'POST',
           headers: {
@@ -29,14 +33,15 @@ const Processing: React.FC = () => {
 
         // Verifica se a resposta foi bem-sucedida
         if (!response.ok) {
-          throw new Error(`Erro HTTP: ${response.status}`);  // Lança erro em caso de status diferente de 200
+          throw new Error(`Erro HTTP: ${response.status}`); // Lança erro em caso de status diferente de 200
         }
 
         const result = await response.json();
+        console.log("Resposta da API:", result);  // Adiciona log para depuração
 
         if (result.success) {
           // Navegar para a tela de resultado com o resultado da predição
-          navigate('/result', { state: { prediction: result.prediction } });
+          navigate('/result', { state: { prediction: result.prediction, confidence: result.confidence } });
         } else {
           console.error('Erro na predição:', result.message);
           navigate('/result', { state: { prediction: null, error: result.message } });
@@ -44,10 +49,13 @@ const Processing: React.FC = () => {
       } catch (error) {
         console.error('Erro ao se comunicar com a API:', error);
         navigate('/result', { state: { prediction: null, error: 'Erro de comunicação com o servidor.' } });
+      } finally {
+        setLoading(false); // Desativa o estado de carregamento após o processamento
       }
     };
 
-    fetchPrediction(); // Chama a função de predição assim que a tela carrega
+    // Chama a função de predição assim que a tela carrega
+    fetchPrediction();
 
   }, [location.state, navigate]);
 
@@ -58,7 +66,7 @@ const Processing: React.FC = () => {
         <div className="pacman-wrapper">
           <PacmanLoader
             color="#1a2a6c"
-            loading={true}  // Define o loading como sempre ativo
+            loading={loading}  // Define o loading como dependente do estado
             size={30}
             speedMultiplier={0.9}
           />

@@ -3,54 +3,10 @@ from flask_cors import CORS
 import numpy as np
 import tensorflow as tf  # Para carregar o modelo
 from sklearn.preprocessing import StandardScaler
-import cv2
-import mediapipe as mp
-from PIL import Image
-import io
 
 app = Flask(__name__)
 # Configurar CORS para permitir requisições do frontend em http://localhost:5173
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
-
-# Inicializa a solução Face Mesh do MediaPipe
-mp_face_mesh = mp.solutions.face_mesh
-
-def detect_face_mesh(image_rgb):
-    with mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1) as face_mesh:
-        results = face_mesh.process(image_rgb)
-        landmarks_3d = []
-        if results.multi_face_landmarks:
-            for face_landmarks in results.multi_face_landmarks:
-                for lm in face_landmarks.landmark:
-                    height, width, _ = image_rgb.shape
-                    x = int(lm.x * width)
-                    y = int(lm.y * height)
-                    z = lm.z
-                    landmarks_3d.append((x, y, z))
-        return landmarks_3d
-
-@app.route('/extract-face-mesh', methods=['POST'])
-def extract_face_mesh():
-    if 'image' not in request.files:
-        return jsonify({"success": False, "message": "Nenhuma imagem foi enviada."}), 400
-
-    image_file = request.files['image']
-
-    try:
-        image = Image.open(image_file.stream)
-        image_rgb = np.array(image.convert('RGB'))
-
-        landmarks_3d = detect_face_mesh(image_rgb)
-
-        if len(landmarks_3d) == 0:
-            return jsonify({"success": False, "message": "Nenhuma face foi detectada."})
-
-        return jsonify({"success": True, "faceMesh": landmarks_3d})
-
-    except Exception as e:
-        print(f"Erro ao processar a imagem: {e}")
-        return jsonify({"success": False, "message": "Erro ao processar a imagem."}), 500
-
+CORS(app)  # Habilitar CORS para permitir requisições do frontend
 
 # Função para calcular a distância euclidiana
 def calculate_euclidean_distance(point1, point2):
@@ -58,39 +14,37 @@ def calculate_euclidean_distance(point1, point2):
 
 # Função para calcular distâncias antropométricas baseadas nos pontos fornecidos
 def calculate_anthropometric_distances(face_landmarks):
-    # Vale lembrar que, na API os numeros dos pontos são -1 a menos do que no codigo .py padrão, no outro código, usa-se Xi para identificar o np.array.
-    # Aqui, , aqui tem-se as posições começando em 0.
     # Tamanhos da face
-    face_width_ref1 = np.array(face_landmarks[126])
-    face_width_ref2 = np.array(face_landmarks[355])
+    face_width_ref1 = np.array(face_landmarks[127])  # Acessando diretamente o ponto 127
+    face_width_ref2 = np.array(face_landmarks[356])  # Acessando diretamente o ponto 356
     
     # Parte Superior do rosto
-    trichion = np.array(face_landmarks[9])
-    glabella = np.array(face_landmarks[8])
-    frontozygomaticus_left = np.array(face_landmarks[299])
-    frontozygomaticus_right = np.array(face_landmarks[69])
+    trichion = np.array(face_landmarks[10])  # Ponto 10    
+    glabella = np.array(face_landmarks[9])   # Ponto 9
+    frontozygomaticus_left = np.array(face_landmarks[300])  # Ponto 300
+    frontozygomaticus_right = np.array(face_landmarks[70])  # Ponto 70
     
     # Olhos
-    endo_canthus_left = np.array(face_landmarks[132])
-    endo_canthus_right = np.array(face_landmarks[361])
-    exo_canthus_left = np.array(face_landmarks[262])
-    exo_canthus_right = np.array(face_landmarks[32])
+    endo_canthus_left = np.array(face_landmarks[133])  # Ponto 133
+    endo_canthus_right = np.array(face_landmarks[362])  # Ponto 362
+    exo_canthus_left = np.array(face_landmarks[263])  # Ponto 263
+    exo_canthus_right = np.array(face_landmarks[33])  # Ponto 33
     
     # Nariz
-    upper_philtrum = np.array(face_landmarks[18])
-    alare_left = np.array(face_landmarks[293])
-    alare_right = np.array(face_landmarks[63])
+    upper_philtrum = np.array(face_landmarks[19])  # Ponto 19
+    alare_left = np.array(face_landmarks[294])  # Ponto 294
+    alare_right = np.array(face_landmarks[64])  # Ponto 64
     
     # Labios
-    lower_philtrum = np.array(face_landmarks[0])
-    christa_philtri_left = np.array(face_landmarks[266])
-    christa_philtri_right = np.array(face_landmarks[36])
-    cheilion_left = np.array(face_landmarks[60])
-    cheilion_right = np.array(face_landmarks[290])
+    lower_philtrum = np.array(face_landmarks[0])  # Ponto 0
+    christa_philtri_left = np.array(face_landmarks[267])  # Ponto 267
+    christa_philtri_right = np.array(face_landmarks[37])  # Ponto 37
+    cheilion_left = np.array(face_landmarks[61])  # Ponto 61
+    cheilion_right = np.array(face_landmarks[291])  # Ponto 291
     
     # Queixo
-    pogonion = np.array(face_landmarks[198])
-    menton = np.array(face_landmarks[151])
+    pogonion = np.array(face_landmarks[199])  # Ponto 199
+    menton = np.array(face_landmarks[152])  # Ponto 152
 
     # Cálculos das distâncias antropométricas
     distances = {
@@ -143,19 +97,19 @@ def calculate_anthropometric_distances(face_landmarks):
 # Função para preparar os dados para o modelo
 def prepare_data_for_model(anthropometric_data):
     features = np.array(list(anthropometric_data.values())).reshape(1, -1)
-
-    # Normalizar os dados
-    #scaler = StandardScaler()
-    #features_scaled = scaler.fit_transform(features)
-
-    #return features_scaled
-    return features
     
+    # Normalizar os dados
+    scaler = StandardScaler()
+    features_scaled = scaler.fit_transform(features)
+    
+    return features_scaled
+
 # Carregar o modelo salvo
 model_path = '../models/best_model_3.0_layers_2_neurons_32_lr_0.001_epochs_30.h5'
 model = tf.keras.models.load_model(model_path)
 
-@app.route('/predict-autism', methods=['POST'])
+# Rota para receber os dados, calcular as distâncias e fazer a predição
+@app.route('/predict-autism-not-used', methods=['POST'])
 def predict_autism():
     data = request.get_json()
 
@@ -167,9 +121,6 @@ def predict_autism():
     # Calcular as distâncias antropométricas
     anthropometric_distances = calculate_anthropometric_distances(face_landmarks)
     
-    if len(anthropometric_distances) != 39:
-        return jsonify({"success": False, "message": "Número incorreto de features calculadas."}), 400
-
     # Preparar os dados para o modelo
     features = prepare_data_for_model(anthropometric_distances)
     
@@ -184,4 +135,4 @@ def predict_autism():
     })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)   
+    app.run(host='0.0.0.0', port=5000, debug=True)

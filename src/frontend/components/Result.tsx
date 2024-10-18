@@ -21,7 +21,7 @@ const Result: React.FC = () => {
           {prediction === 1 ? (
             <p>Nosso algoritmo detectou indícios de autismo.</p>
           ) : (
-            <p>Nosso algoritmo **não** detectou indícios de autismo.</p>
+            <p>Nosso algoritmo não detectou indícios de autismo.</p>
           )}
 
           <p>Para uma avaliação mais completa e confiável, procure um profissional especializado.</p>
