@@ -244,3 +244,76 @@ button:disabled {
 }
 
 
+/* Configurações para dispositivos grandes */
+@media (max-width: 1280px) {
+  .container, .results-screen {
+    width: 30vw; /* 90% da largura da tela */
+    height: 90vh; /* 90% da altura da tela */
+    aspect-ratio: 9 / 15; /* Mantém a proporção 9:16 */
+    padding: 30px 15px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container, .results-screen {
+    width: 80%;
+    max-width: 1000px;
+    aspect-ratio: 9 / 15;
+    padding: 40px 20px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .container, .results-screen {
+    width: 80%;
+    max-width: 900px;
+    aspect-ratio: 9 / 14;
+    padding: 30px 5px 10px 5px; 
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .container, .results-screen {
+    width: 80%;
+    max-width: 700px;
+    aspect-ratio: 9 / 15;
+    padding: 30px 15px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  button {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container, .results-screen {
+    width: 80%;
+    max-width: 500px;
+    aspect-ratio: 5 / 10;
+    padding: 10px 10px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  button {
+    padding: 7px 15px;
+    font-size: 0.8rem;
+  }
+}
+
