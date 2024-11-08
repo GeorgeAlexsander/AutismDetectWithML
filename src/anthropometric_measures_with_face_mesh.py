@@ -41,21 +41,24 @@ def load_csv(file_path: str) -> pd.DataFrame:
 
 def calculate_euclidean_distance(point1: np.ndarray, point2: np.ndarray) -> float:
     """
-    Calcula a distância euclidiana entre dois pontos 3D.
+    Calcula a distância euclidiana entre dois pontos 2D (X, Y).
 
     Args:
-        point1 (np.ndarray): Primeiro ponto representado como um array NumPy (x, y, z).
-        point2 (np.ndarray): Segundo ponto representado como um array NumPy (x, y, z).
+        point1 (np.ndarray): Primeiro ponto representado como um array NumPy (x, y).
+        point2 (np.ndarray): Segundo ponto representado como um array NumPy (x, y).
 
     Returns:
         float: Distância euclidiana entre os dois pontos.
 
     Examples:
-        >>> point_a = np.array([0, 0, 0])
-        >>> point_b = np.array([3, 4, 5])
-        >>> calculate_euclidean_distance(point_a, point_b)
-        7.0710678118654755
+        >>> point_a = np.array([0, 0])
+        >>> point_b = np.array([3, 4])
+        >>> calculate_euclidean_distance_2d(point_a, point_b)
+        5.0
     """
+    # Verifica se qualquer ponto é inválido (-1, -1)
+    if np.array_equal(point1, [-1, -1]) or np.array_equal(point2, [-1, -1]):
+        return -1  # Indica que a distância é inválida
     return distance.euclidean(point1, point2)
 
 def save_results_to_csv(results: pd.DataFrame, output_file: str) -> None:
@@ -96,33 +99,33 @@ def calculate_distances_3d(df: pd.DataFrame, debug: bool = False) -> pd.DataFram
 
         # Definindo alguns dos marcos faciais principais
         # Tamanhos da face
-        face_width_ref1 = np.array([row['X127'], row['Y127'], row['Z127']])
-        face_width_ref2 = np.array([row['X356'], row['Y356'], row['Z356']])
+        face_width_ref1 = np.array([row['X127'], row['Y127']])
+        face_width_ref2 = np.array([row['X356'], row['Y356']])
         # Parte Superior do rosto
-        trichion = np.array([row['X10'], row['Y10'], row['Z10']])    
-        glabella = np.array([row['X9'], row['Y9'], row['Z9']])
-        frontozygomaticus_left = np.array([row['X300'], row['Y300'], row['Z300']])
-        frontozygomaticus_right = np.array([row['X70'], row['Y70'], row['Z70']])
+        trichion = np.array([row['X10'], row['Y10']])    
+        glabella = np.array([row['X9'], row['Y9']])
+        frontozygomaticus_left = np.array([row['X300'], row['Y300']])
+        frontozygomaticus_right = np.array([row['X70'], row['Y70']])
         # Olhos
-        endo_canthus_left = np.array([row['X133'], row['Y133'], row['Z133']])
-        endo_canthus_right = np.array([row['X362'], row['Y362'], row['Z362']])
-        exo_canthus_left = np.array([row['X263'], row['Y263'], row['Z263']])
-        exo_canthus_right = np.array([row['X33'], row['Y33'], row['Z33']])
+        endo_canthus_left = np.array([row['X133'], row['Y133']])
+        endo_canthus_right = np.array([row['X362'], row['Y362']])
+        exo_canthus_left = np.array([row['X263'], row['Y263']])
+        exo_canthus_right = np.array([row['X33'], row['Y33']])
         # Nariz
-        upper_philtrum = np.array([row['X19'], row['Y19'], row['Z19']])
-        alare_left = np.array([row['X294'], row['Y294'], row['Z294']])
-        alare_right = np.array([row['X64'], row['Y64'], row['Z64']])
+        upper_philtrum = np.array([row['X19'], row['Y19']])
+        alare_left = np.array([row['X294'], row['Y294']])
+        alare_right = np.array([row['X64'], row['Y64']])
         # Labios
-        lower_philtrum = np.array([row['X0'], row['Y0'], row['Z0']])
-        christa_philtri_left = np.array([row['X267'], row['Y267'], row['Z267']])
-        christa_philtri_right = np.array([row['X37'], row['Y37'], row['Z37']])
-        cheilion_left = np.array([row['X61'], row['Y61'], row['Z61']])
-        cheilion_right = np.array([row['X291'], row['Y291'], row['Z291']])
+        lower_philtrum = np.array([row['X0'], row['Y0']])
+        christa_philtri_left = np.array([row['X267'], row['Y267']])
+        christa_philtri_right = np.array([row['X37'], row['Y37']])
+        cheilion_left = np.array([row['X61'], row['Y61']])
+        cheilion_right = np.array([row['X291'], row['Y291']])
         # Queixo
-        pogonion = np.array([row['X199'], row['Y199'], row['Z199']])
-        menton = np.array([row['X152'], row['Y152'], row['Z152']])
-        
+        pogonion = np.array([row['X199'], row['Y199']])
+        menton = np.array([row['X152'], row['Y152']])
         distances = {
+        
             # Distâncias básicas
             "upper_facial_height": calculate_euclidean_distance(trichion, glabella),
             "middle_facial_height": calculate_euclidean_distance(glabella, menton),
@@ -211,8 +214,8 @@ def main(input_csv_no_autism: str, input_csv_with_autism: str, output_csv_no_aut
     save_results_to_csv(results_with_autism, output_csv_with_autism)
 
 if __name__ == "__main__":
-    input_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_no_autism_1.0.csv"  # caminho do CSV sem autismo
-    input_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_with_autism_1.0.csv"  # caminho do CSV com autismo
-    output_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_distances_no_autism_1.0.csv"  # caminho do CSV de saída sem autismo
-    output_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_distances_with_autism_1.0.csv"  # caminho do CSV de saída com autismo
+    input_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_no_autism_6.0.csv"  # caminho do CSV sem autismo
+    input_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_with_autism_6.0.csv"  # caminho do CSV com autismo
+    output_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_distances_no_autism_6.0.csv"  # caminho do CSV de saída sem autismo
+    output_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_distances_with_autism_6.0.csv"  # caminho do CSV de saída com autismo
     main(input_csv_no_autism_path, input_csv_with_autism_path, output_csv_no_autism_path, output_csv_with_autism_path)
