@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 FaceMesh3DExtractor
@@ -47,28 +48,6 @@ def load_image(image_path: str, debug: bool = False) -> np.ndarray:
         raise FileNotFoundError(f"Imagem não encontrada: {image_path}")
 
 
-def resize_image(image: np.ndarray, new_width: int, debug: bool = False) -> np.ndarray:
-    """
-    Redimensiona a imagem mantendo a proporção original.
-
-    Args:
-        image (np.ndarray): Imagem a ser redimensionada.
-        new_width (int): Nova largura da imagem.
-        debug (bool): Se True, exibe informações de debug.
-
-    Returns:
-        np.ndarray: Imagem redimensionada com a proporção mantida.
-    """
-    aspect_ratio = image.shape[1] / image.shape[0]  # Largura/Altura
-    new_height = int(new_width / aspect_ratio)
-    resized_image = cv2.resize(image, (new_width, new_height))
-
-    if debug:
-        print(f"Imagem redimensionada para {new_width}x{new_height} pixels.")
-
-    return resized_image
-
-
 def detect_face_mesh(image_rgb: np.ndarray, debug: bool = False) -> list:
     """
     Detecta marcos faciais 3D usando o MediaPipe FaceMesh.
@@ -83,29 +62,18 @@ def detect_face_mesh(image_rgb: np.ndarray, debug: bool = False) -> list:
     with mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1) as face_mesh:
         results = face_mesh.process(image_rgb)
         landmarks_3d = []
-        
-        # Verifica se alguma face foi detectada
         if results.multi_face_landmarks:
             for face_landmarks in results.multi_face_landmarks:
                 for lm in face_landmarks.landmark:
+                    # Converte as coordenadas de normalizadas para pixel
                     height, width, _ = image_rgb.shape
                     x = int(lm.x * width)
                     y = int(lm.y * height)
-                    z = lm.z  # Z permanece normalizado
-                    
-                    # Verifica se as coordenadas estão dentro dos limites da imagem
-                    if 0 <= x < width and 0 <= y < height:
-                        landmarks_3d.append((x, y, z))
-                    else:
-                        landmarks_3d.append((-1, -1, -1))  # Marca com (-1, -1, -1) se estiver fora dos limites
+                    z = lm.z  # Z permanece em valor normalizado
+                    landmarks_3d.append((x, y, z))
 
-            # Debugging: imprime os marcos detectados
-            if debug and len(landmarks_3d) > 0:
-                print(f"{len(landmarks_3d)} marcos faciais detectados em 3D.")
-        
-        # Se nenhuma face foi detectada ou não houver landmarks válidos
-        if len(landmarks_3d) == 0:
-            return None
+        if debug and len(landmarks_3d) > 0:
+            print(f"{len(landmarks_3d)} marcos faciais detectados em 3D.")
         
         return landmarks_3d
 
@@ -132,7 +100,6 @@ def plot_landmarks(image: np.ndarray, landmarks: list, debug: bool = False) -> N
         plt.axis("off")
         plt.title("Marcos Faciais 3D")
         plt.show()
-
 
 def plot_main_landmarks(image: np.ndarray, landmarks: list, debug: bool = False) -> None:
     """
@@ -174,7 +141,9 @@ def plot_main_landmarks(image: np.ndarray, landmarks: list, debug: bool = False)
         if index < len(landmarks):  # Verifica se o índice está dentro do alcance
             x, y, _ = landmarks[index]
             # Desenha um círculo vermelho para o marco
+            cv2.circle(image, (int(x), int(y)), 2, (255, 0, 0), -1)  # Círculo vermelho
             # Adiciona o número do marco ao lado
+            cv2.putText(image, str(index), (int(x) + 2, int(y) - 2), cv2.FONT_HERSHEY_SIMPLEX, 0.2, (255, 0, 0), 1)
 
     # Exibindo a imagem resultante com os marcos principais
     if debug:
@@ -184,12 +153,13 @@ def plot_main_landmarks(image: np.ndarray, landmarks: list, debug: bool = False)
         plt.show()
 
 
+def save_landmarks_to_csv(landmarks: list, image_num: int, class_label: int, output_file: str, debug: bool = False) -> None:
     """
+    Salva os marcos faciais detectados em um arquivo CSV, organizados como X1, Y1, Z1, X2, Y2, Z2, etc.
 
     Args:
         landmarks (list): Lista de marcos faciais detectados.
         image_num (int): Número da imagem atual.
-        class_label (int): Classe da imagem.
         output_file (str): Nome do arquivo CSV onde os marcos serão salvos.
         debug (bool): Se True, exibe informações de debug.
 
@@ -205,8 +175,6 @@ def plot_main_landmarks(image: np.ndarray, landmarks: list, debug: bool = False)
 
     # Define os nomes das colunas: X1, Y1, Z1, X2, Y2, Z2, ..., X468, Y468, Z468
     columns = ["amostra", "class"]
-    # Define os nomes das colunas: amostra, class, X1, Y1, Z1, ..., X468, Y468, Z468, idade, genero
-    columns = ["samples", "class"]
     for i in range(len(landmarks)):
         columns.extend([f"X{i}", f"Y{i}", f"Z{i}"])
 
@@ -215,9 +183,11 @@ def plot_main_landmarks(image: np.ndarray, landmarks: list, debug: bool = False)
     if not os.path.exists(output_file):
         df.to_csv(output_file, index=False)
         if debug:
+            print(f"Criado arquivo {output_file} e salvou os marcos faciais da imagem {image_num}.")
     else:
         df.to_csv(output_file, mode="a", header=False, index=False)
         if debug:
+            print(f"Adicionado marcos faciais da imagem {image_num} ao arquivo {output_file}.")
 
 
 def process_images_in_folder(
@@ -248,8 +218,10 @@ def process_images_in_folder(
         try:
             # Carregar a imagem
             image_rgb = load_image(image_path, debug=debug)
+            image_rgb_main_landmarks = load_image(image_path, debug=debug)
 
             # Detectar marcos faciais
+            landmarks = detect_face_mesh(image_rgb, debug=debug)
 
             if len(landmarks) == 0:
                 if debug:
@@ -258,7 +230,11 @@ def process_images_in_folder(
 
             if i < 5:
                 # Plotar os landmarks
+                plot_landmarks(image_rgb, landmarks, debug=debug)
+                plot_main_landmarks(image_rgb_main_landmarks, pd.Series(landmarks), debug=debug)
 
+            # Salvar os marcos em um CSV
+            save_landmarks_to_csv(landmarks, i + 1, class_label, output_csv, debug=debug)
 
         except FileNotFoundError as e:
             print(f"Arquivo não encontrado: {e}")
@@ -280,6 +256,8 @@ def main():
     os.makedirs(output_folder, exist_ok=True)
 
     # Processar imagens de no_autism
+    output_csv_no_autism = os.path.join(output_folder, "face_mesh_no_autism_3.0.csv")
+    folder_path_no_autism = "../data/raw/processed_no_autistic"
     
     if os.path.isfile(output_csv_no_autism): 
         os.remove(output_csv_no_autism)
@@ -288,6 +266,21 @@ def main():
         folder_path_no_autism,
         output_csv_no_autism,
         class_label=0,
+        debug=False,
+    )
+
+    # Processar imagens de with_autism
+    output_csv_with_autism = os.path.join(output_folder, "face_mesh_with_autism_3.0.csv")
+    folder_path_with_autism = "../data/raw/processed_with_autistic"
+    
+    if os.path.isfile(output_csv_with_autism): 
+        os.remove(output_csv_with_autism)
+
+    process_images_in_folder(
+        folder_path_with_autism,
+        output_csv_with_autism,
+        class_label=1,
+        debug=False,
     )
 
 
