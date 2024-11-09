@@ -1,5 +1,3 @@
-// src/frontend/App.tsx
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import OpeningScreen from './components/OpeningScreen';
@@ -11,7 +9,7 @@ import './styles/styles.css';
 
 const App: React.FC = () => {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path="/" element={<OpeningScreen />} />
         <Route path="/instructions" element={<InstructionsScreen />} />
