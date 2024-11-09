@@ -1,0 +1,326 @@
+/* ================== Estilos Gerais ================== */
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #a0c4ff, #c9e4ff); /* Gradiente de fundo */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Tela cheia */
+  overflow: hidden;
+}
+
+/* ================== Contêiner Padrão para Todas as Telas ================== */
+.container {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 50vh;
+  height: 70vh; /* Reduzido para diminuir a área do flexbox */
+  padding: 80px 40px; /* Mais espaço superior e inferior */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Espaçamento uniforme entre elementos */
+  align-items: center;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+/* ================== Títulos e Textos Gerais ================== */
+h1 {
+  font-size: 2rem;
+  color: #1a2a6c; /* Azul escuro */
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ================== Estilos das Imagens ================== */
+.instruction-image, .upload-area img {
+  max-width: 60%;
+  max-height: 60%;
+  margin: 0 auto;
+  border-radius: 8px;
+  display: block;
+}
+
+/* ================== Botões Gerais ================== */
+button {
+  padding: 15px 30px;
+  background-color: #1a2a6c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #142051;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Botão "Escolher Arquivo" */
+button#choose-file-btn {
+  background-color: #2a9d8f;
+}
+
+button#choose-file-btn:hover {
+  background-color: #21867a;
+}
+
+/* Botão "Prosseguir" */
+button#continue-btn {
+  background-color: #1a2a6c;
+}
+
+/* ================== Área de Upload ================== */
+.upload-area {
+  border: 2px solid #a0c4ff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 300px;
+  height: 250px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f8ff;
+}
+
+.upload-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espaço entre os botões */
+}
+
+button:hover {
+  background-color: #142051; /* Efeito hover mais escuro */
+}
+
+/* Estilo do botão desativado */
+button:disabled {
+  background-color: #ccc; /* Cinza para mostrar que está desativado */
+  cursor: not-allowed; /* Cursor de não permitido */
+  opacity: 0.6; /* Transparência para indicar que está desativado */
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Espaço entre os botões */
+}
+  
+  button#choose-file-btn {
+    background-color: #2a9d8f;
+  }
+  
+  button#choose-file-btn:hover {
+    background-color: #21867a;
+  }
+  
+  button#continue-btn {
+    background-color: #1a2a6c;
+  }
+  
+  button#continue-btn:hover {
+    background-color: #142051;
+  }
+
+
+/* ================== Estilos da Tela de Instruções ================== */
+.instructions-screen .slick-slider {
+  max-width: 100%;
+  margin: 20px auto;
+}
+
+.carousel-slide {
+  text-align: center;
+  padding: 20px;
+}
+
+.carousel-slide img {
+  max-width: 60%; /* Reduz o tamanho da imagem */
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+.instruction-text {
+  font-size: 1rem;
+  color: #555; /* Tom neutro para boa leitura */
+  text-align: left; /* Alinha o texto à esquerda */
+  margin: auto auto 15px; /* Espaço acima e abaixo, e centraliza o bloco horizontalmente */
+  line-height: 1.6; /* Espaçamento entre linhas */
+  max-width: 75%; /* Limita a largura do texto */
+}
+
+
+.slick-dots li button:before {
+  color: #1a2a6c;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #142051;
+}
+
+/* Botão circular na tela de instruções */
+.instructions-screen button {
+  background-color: #1a2a6c;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.instructions-screen button:hover {
+  background-color: #142051;
+}
+
+/* Botão "Prosseguir" */
+#prosseguir-btn {
+  background-color: #1a2a6c;
+  color: white;
+  border: none;
+  width: auto;
+  height: auto;
+  border-radius: 5px;
+  padding: 12px 20px;
+  margin: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* ================== Estilos da Tela de Processamento ================== */
+.processing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* Espaçamento uniforme */
+}
+
+.spinner {
+  margin-top: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.processing-text {
+  margin-top: 30px;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* ================== Estilos da Tela de Resultados ================== */
+.results-screen {
+  background-color: white; /* Cor de fundo */
+  border-radius: 12px; /* Borda arredondada */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra */
+  width: 400px; /* Largura consistente */
+  height: 650px; /* Altura consistente */
+  padding: 40px; /* Espaçamento interno */
+  display: flex;
+  flex-direction: column; /* Organiza o conteúdo verticalmente */
+  align-items: center; /* Centraliza horizontalmente */
+  justify-content: space-between; /* Espaçamento uniforme entre os elementos */
+}
+
+.result-container img {
+  margin-top: 30px;
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 8px;
+}
+
+/* ================== Media Queries para Responsividade ================== */
+/* Configurações para dispositivos grandes */
+
+
+
+@media (max-width: 1024px) {
+  .container, .results-screen {
+    width: 80%;
+    max-width: 1000px;
+    aspect-ratio: 9 / 15;
+    padding: 40px 20px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .container, .results-screen {
+    width: 80%;
+    max-width: 900px;
+    aspect-ratio: 9 / 14;
+    padding: 30px 5px 10px 5px; 
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .container, .results-screen {
+    width: 80%;
+    max-width: 700px;
+    aspect-ratio: 9 / 15;
+    padding: 30px 15px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  button {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container, .results-screen {
+    width: 85%;
+    max-width: 500px;
+    aspect-ratio: 6 / 10;
+    padding: 40px 25px;
+    margin: 0  auto;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  button {
+    padding: 7px 15px;
+    font-size: 0.8rem;
+  }
+}
+
+
+@media (max-width: 395px) {
+  .container, .results-screen {
+    width: 100%;
+    max-width: 350px;
+    aspect-ratio: 13 / 14;
+    padding: 40px 5px 100px 5px; 
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+}

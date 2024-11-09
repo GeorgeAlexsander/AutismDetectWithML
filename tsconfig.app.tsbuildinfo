@@ -1,0 +1,1 @@
+{"root":["./src/frontend/app.tsx","./src/frontend/main.tsx","./src/frontend/vite-env.d.ts","./src/frontend/components/instructionsscreen.tsx","./src/frontend/components/openingscreen.tsx","./src/frontend/components/photoupload.tsx","./src/frontend/components/processing.tsx","./src/frontend/components/result.tsx"],"version":"5.6.3"}
