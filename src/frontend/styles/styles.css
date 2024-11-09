@@ -16,8 +16,8 @@ body {
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  height: 650px; /* Reduzido para diminuir a área do flexbox */
+  width: 50vh;
+  height: 70vh; /* Reduzido para diminuir a área do flexbox */
   padding: 80px 40px; /* Mais espaço superior e inferior */
   text-align: center;
   display: flex;
@@ -156,7 +156,7 @@ button:disabled {
   font-size: 1rem;
   color: #555; /* Tom neutro para boa leitura */
   text-align: left; /* Alinha o texto à esquerda */
-  margin: 20px auto; /* Espaço acima e abaixo, e centraliza o bloco horizontalmente */
+  margin: auto auto 15px; /* Espaço acima e abaixo, e centraliza o bloco horizontalmente */
   line-height: 1.6; /* Espaçamento entre linhas */
   max-width: 75%; /* Limita a largura do texto */
 }
@@ -195,6 +195,7 @@ button:disabled {
   height: auto;
   border-radius: 5px;
   padding: 12px 20px;
+  margin: 15px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -222,7 +223,6 @@ button:disabled {
 }
 
 /* ================== Estilos da Tela de Resultados ================== */
-/* ================== Estilos da Tela de Resultados ================== */
 .results-screen {
   background-color: white; /* Cor de fundo */
   border-radius: 12px; /* Borda arredondada */
@@ -243,17 +243,10 @@ button:disabled {
   border-radius: 8px;
 }
 
-
+/* ================== Media Queries para Responsividade ================== */
 /* Configurações para dispositivos grandes */
-@media (max-width: 1280px) {
-  .container, .results-screen {
-    width: 30vw; /* 90% da largura da tela */
-    height: 90vh; /* 90% da altura da tela */
-    aspect-ratio: 9 / 15; /* Mantém a proporção 9:16 */
-    padding: 30px 15px;
-    margin: 0 auto;
-  }
-}
+
+
 
 @media (max-width: 1024px) {
   .container, .results-screen {
@@ -300,11 +293,11 @@ button:disabled {
 
 @media (max-width: 480px) {
   .container, .results-screen {
-    width: 80%;
+    width: 85%;
     max-width: 500px;
-    aspect-ratio: 5 / 10;
-    padding: 10px 10px;
-    margin: 0 auto;
+    aspect-ratio: 6 / 10;
+    padding: 40px 25px;
+    margin: 0  auto;
   }
 
   h1 {
@@ -317,3 +310,17 @@ button:disabled {
   }
 }
 
+
+@media (max-width: 395px) {
+  .container, .results-screen {
+    width: 100%;
+    max-width: 350px;
+    aspect-ratio: 13 / 14;
+    padding: 40px 5px 100px 5px; 
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+}
