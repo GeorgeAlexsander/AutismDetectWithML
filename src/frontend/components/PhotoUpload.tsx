@@ -59,10 +59,7 @@ const PhotoUpload: React.FC = () => {
             alt="Pré-visualização"
           />
         ) : (
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/photo_children_default.png`}
-            alt="Exemplo de foto"
-          />
+          <img src="/src/frontend/assets/photo_children_default.png" alt="Exemplo de foto" />
         )}
       </div>
 
