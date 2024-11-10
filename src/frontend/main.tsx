@@ -7,7 +7,7 @@ import './styles/styles.css'; // Importando os estilos
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <BrowserRouter basename={process.env.PUBLIC_URL}>  {/* Adicionando o BrowserRouter */}
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>

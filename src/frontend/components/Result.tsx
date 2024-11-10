@@ -15,11 +15,7 @@ const Result: React.FC = () => {
         <p style={{ color: 'red' }}>Ocorreu um erro: {error}</p>
       ) : (
         <>
-          {/* Atualizando o caminho da imagem */}
-          <img 
-            src={`${process.env.PUBLIC_URL}/assets/autism_heart_symbol.png`} 
-            alt="Símbolo do Coração do Autismo" 
-          />
+          <img src="/src/frontend/assets/autism_heart_symbol.png" alt="Símbolo do Coração do Autismo" />
 
           {/* Verifica o valor da predição */}
           {prediction === 1 ? (

@@ -4,8 +4,8 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css"; 
 
-const distanceImage = `${process.env.PUBLIC_URL}/assets/instructions_distance.png`;
-const photoExampleImage = `${process.env.PUBLIC_URL}/assets/instructions_photo_example.png`;
+import distanceImage from '../assets/instructions_distance.png';
+import photoExampleImage from '../assets/instructions_photo_example.png';
 
 const InstructionsScreen: React.FC = () => {
   const navigate = useNavigate();
