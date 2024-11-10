@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css"; 
@@ -9,26 +9,24 @@ import photoExampleImage from '../assets/instructions_photo_example.png';
 
 const InstructionsScreen: React.FC = () => {
   const navigate = useNavigate();
-  const sliderRef = useRef<Slider | null>(null);
+  const sliderRef = useRef<Slider>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const settings = {
     dots: true,
     infinite: false,
     speed: 500,
+    afterChange: (current: number) => setCurrentSlide(current),
   };
 
   const handleContinue = () => {
-    const sliderInstance = sliderRef.current?.innerSlider;
+    const slides = React.Children.toArray(sliderRef.current?.props.children);
+    const slideCount = slides.length;
 
-    if (sliderInstance) {
-      const currentSlide = sliderInstance.state.currentSlide;
-      const slideCount = sliderInstance.state.slideCount;
-
-      if (currentSlide < slideCount - 1) {
-        sliderRef.current?.slickNext();
-      } else {
-        navigate('/upload');
-      }
+    if (currentSlide < slideCount - 1) {
+      sliderRef.current?.slickNext();
+    } else {
+      navigate('/upload');
     }
   };
 
