@@ -1,5 +1,10 @@
+// src/frontend/components/Result.tsx
+
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+
+// Importando a imagem diretamente
+import autismHeartSymbol from '../assets/autism_heart_symbol.png';
 
 const Result: React.FC = () => {
   const location = useLocation();
@@ -15,7 +20,7 @@ const Result: React.FC = () => {
         <p style={{ color: 'red' }}>Ocorreu um erro: {error}</p>
       ) : (
         <>
-          <img src="/src/frontend/assets/autism_heart_symbol.png" alt="Símbolo do Coração do Autismo" />
+          <img src={autismHeartSymbol} alt="Símbolo do Coração do Autismo" />
 
           {/* Verifica o valor da predição */}
           {prediction === 1 ? (

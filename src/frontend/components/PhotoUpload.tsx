@@ -1,5 +1,10 @@
+// src/frontend/components/PhotoUpload.tsx
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// Importando a imagem diretamente
+import defaultPhoto from '../assets/photo_children_default.png';
 
 const PhotoUpload: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -59,7 +64,7 @@ const PhotoUpload: React.FC = () => {
             alt="Pré-visualização"
           />
         ) : (
-          <img src="/src/frontend/assets/photo_children_default.png" alt="Exemplo de foto" />
+          <img src={defaultPhoto} alt="Exemplo de foto" />
         )}
       </div>
 
