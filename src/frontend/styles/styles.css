@@ -17,6 +17,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 400px;
+  height: 500px;
   padding: 80px 40px; /* Mais espaço superior e inferior */
   text-align: center;
   display: flex;
@@ -136,12 +137,12 @@ button:disabled {
 /* ================== Estilos da Tela de Instruções ================== */
 .instructions-screen .slick-slider {
   max-width: 100%;
-  margin: 20px auto;
+  margin: 30px;
 }
 
 .carousel-slide {
   text-align: center;
-  padding: 20px;
+  padding: auto;
 }
 
 .carousel-slide img {
@@ -154,8 +155,8 @@ button:disabled {
 .instruction-text {
   font-size: 1rem;
   color: #555; /* Tom neutro para boa leitura */
-  text-align: left; /* Alinha o texto à esquerda */
-  margin: 20px auto; /* Espaço acima e abaixo, e centraliza o bloco horizontalmente */
+  text-align: justify; /* Alinha o texto à esquerda */
+  margin: 0px auto 30px; /* Espaço acima e abaixo, e centraliza o bloco horizontalmente */
   line-height: 1.6; /* Espaçamento entre linhas */
   max-width: 75%; /* Limita a largura do texto */
 }
@@ -207,8 +208,7 @@ button:disabled {
   justify-content: space-between; /* Espaçamento uniforme */
 }
 
-.spinner {
-  margin-top: 45px;
+.pacman-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
