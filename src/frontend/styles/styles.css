@@ -17,7 +17,6 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 400px;
-  height: 650px; /* Reduzido para diminuir a área do flexbox */
   padding: 80px 40px; /* Mais espaço superior e inferior */
   text-align: center;
   display: flex;
