@@ -140,6 +140,7 @@ def calculate_anthropometric_distances(face_landmarks):
 
     return distances
 
+
 # Função para preparar os dados para o modelo
 def prepare_data_for_model(anthropometric_data):
     features = np.array(list(anthropometric_data.values())).reshape(1, -1)
@@ -184,4 +185,4 @@ def predict_autism():
     })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)   
+    app.run(debug=True)
