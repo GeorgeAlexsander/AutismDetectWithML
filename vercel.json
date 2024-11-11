@@ -3,23 +3,21 @@
     "builds": [
       {
         "src": "src/frontend/package.json",
-        "use": "@vercel/static-build",
-        "config": { "distDir": "build" }
+        "use": "@vercel/static-build"
       },
       {
         "src": "src/backend/AutismPredictionAPI.py",
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb" }
+        "use": "@vercel/python"
       }
     ],
     "routes": [
       {
-        "src": "/api/(.*)",
-        "dest": "src/backend/AutismPredictionAPI.py"
+        "src": "/(.*)",
+        "dest": "/src/frontend/$1"
       },
       {
-        "src": "/(.*)",
-        "dest": "src/frontend/build/$1"
+        "src": "/api/(.*)",
+        "dest": "/src/backend/$1"
       }
     ]
   }
