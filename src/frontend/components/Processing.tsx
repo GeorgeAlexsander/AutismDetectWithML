@@ -23,7 +23,8 @@ const Processing: React.FC = () => {
       try {
         setLoading(true); // Ativa o estado de carregamento
 
-        const response = await fetch('http://localhost:5000/predict-autism', {
+        // Faz a requisição para a API no Render
+        const response = await fetch('https://autismdetectwithmlapi.onrender.com/predict-autism', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

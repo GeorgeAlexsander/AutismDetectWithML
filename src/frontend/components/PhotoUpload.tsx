@@ -1,5 +1,3 @@
-// src/frontend/components/PhotoUpload.tsx
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,8 +23,8 @@ const PhotoUpload: React.FC = () => {
       formData.append('image', selectedFile);
 
       try {
-        // Faz a requisição para o backend
-        const response = await fetch('http://localhost:5000/extract-face-mesh', {
+        // Usar o URL da API no Render
+        const response = await fetch('https://autismdetectwithmlapi.onrender.com/extract-face-mesh', {
           method: 'POST',
           body: formData,
         });
