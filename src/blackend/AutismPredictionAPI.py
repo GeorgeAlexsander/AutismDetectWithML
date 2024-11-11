@@ -7,10 +7,11 @@ import cv2
 import mediapipe as mp
 from PIL import Image
 import io
+import os
 
 app = Flask(__name__)
-# Configurar CORS para permitir requisições do frontend em http://localhost:5173
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+# Configurar CORS para permitir requisições do frontend
+CORS(app)
 
 # Inicializa a solução Face Mesh do MediaPipe
 mp_face_mesh = mp.solutions.face_mesh
@@ -185,4 +186,5 @@ def predict_autism():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, host="0.0.0.0", port=port)

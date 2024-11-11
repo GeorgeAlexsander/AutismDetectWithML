@@ -8,18 +8,14 @@
           "config": { "distDir": "build" }
         },
         {
-          "src": "src/backend/AutismPredictionAPI.py",
+          "src": "src/(.*)",
           "use": "@vercel/python"
         }
       ],
       "routes": [
         {
-          "src": "/api/(.*)",
-          "dest": "src/backend/AutismPredictionAPI.py"
-        },
-        {
-          "src": "/(.*)",
-          "dest": "src/frontend/build/$1"
+          "src": "src/(.*)",
+          "dest": "src/backend/"
         }
       ]
     }
