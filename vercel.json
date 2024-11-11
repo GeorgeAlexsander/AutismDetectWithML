@@ -1,22 +1,26 @@
 {
-    "projects": {
-      "name": "autism-detect-with-ml",
-      "builds": [
-        {
-          "src": "src/frontend/package.json",
-          "use": "@vercel/static-build",
-          "config": { "distDir": "build" }
-        },
-        {
-          "src": "src/(.*)",
-          "use": "@vercel/python"
-        }
-      ],
-      "routes": [
-        {
-          "src": "src/(.*)",
-          "dest": "src/backend/"
-        }
-      ]
-    }
+    "version": 2,
+    "builds": [
+      {
+        "src": "src/frontend/package.json",
+        "use": "@vercel/static-build",
+        "config": { "distDir": "build" }
+      },
+      {
+        "src": "src/backend/AutismPredictionAPI.py",
+        "use": "@vercel/python",
+        "config": { "maxLambdaSize": "15mb" }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "src/backend/AutismPredictionAPI.py"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "src/frontend/build/$1"
+      }
+    ]
   }
+  
