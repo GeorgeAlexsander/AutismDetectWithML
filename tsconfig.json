@@ -1,7 +1,13 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "target": "es2022",                 // Altere conforme necessário
+    "module": "commonjs",               // Pode ser "esnext" ou outro, dependendo do ambiente
+    "moduleResolution": "node",         // Corrigido de "bundler" para "node"
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts"],           // Inclua todos os arquivos TypeScript da sua pasta de código
+  "exclude": ["node_modules"]           // Evite incluir bibliotecas externas
 }
