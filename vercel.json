@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "src/backend/AutismPredictionAPI.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "src/backend/AutismPredictionAPI.py"
+      }
+    ]
+  }
+  
