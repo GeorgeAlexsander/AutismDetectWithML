@@ -237,8 +237,8 @@ button:disabled {
 
 .result-container img {
   margin-top: 30px;
-  max-width: 300px;
-  max-height: 300px;
+  max-width: 70%;
+  max-height: 70%;
   border-radius: 8px;
 }
 
