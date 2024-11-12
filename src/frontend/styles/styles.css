@@ -247,7 +247,7 @@ button:disabled {
 @media (max-width: 1280px) {
   .container, .results-screen {
     width: 30vw; /* 90% da largura da tela */
-    height: 90vh; /* 90% da altura da tela */
+    height: 80vh; /* 90% da altura da tela */
     aspect-ratio: 9 / 15; /* Mantém a proporção 9:16 */
     padding: 30px 15px;
     margin: 0 auto;
