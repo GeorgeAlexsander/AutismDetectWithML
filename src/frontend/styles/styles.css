@@ -146,7 +146,7 @@ button:disabled {
 }
 
 .carousel-slide img {
-  max-width: 60%; /* Reduz o tamanho da imagem */
+  max-width: 60%; 
   border-radius: 8px;
   display: block;
   margin: 0 auto;
@@ -154,9 +154,9 @@ button:disabled {
 
 .instruction-text {
   font-size: 1rem;
-  color: #555; /* Tom neutro para boa leitura */
-  text-align: justify; /* Alinha o texto à esquerda */
-  margin: 0px auto 30px; /* Espaço acima e abaixo, e centraliza o bloco horizontalmente */
+  color: #555; 
+  text-align: justify;
+  margin: 0px auto 30px; 
   line-height: 1.6; /* Espaçamento entre linhas */
   max-width: 75%; /* Limita a largura do texto */
 }
@@ -223,16 +223,16 @@ button:disabled {
 /* ================== Estilos da Tela de Resultados ================== */
 /* ================== Estilos da Tela de Resultados ================== */
 .results-screen {
-  background-color: white; /* Cor de fundo */
-  border-radius: 12px; /* Borda arredondada */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra */
-  width: 400px; /* Largura consistente */
-  height: 650px; /* Altura consistente */
-  padding: 40px; /* Espaçamento interno */
+  background-color: white;
+  border-radius: 12px; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  height: 650px; 
+  padding: 40px; 
   display: flex;
-  flex-direction: column; /* Organiza o conteúdo verticalmente */
-  align-items: center; /* Centraliza horizontalmente */
-  justify-content: space-between; /* Espaçamento uniforme entre os elementos */
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: space-between; 
 }
 
 .result-container img {
@@ -246,13 +246,14 @@ button:disabled {
 /* Configurações para dispositivos grandes */
 @media (max-width: 1280px) {
   .container, .results-screen {
-    width: 30vw; /* 90% da largura da tela */
-    height: 80vh; /* 90% da altura da tela */
-    aspect-ratio: 9 / 15; /* Mantém a proporção 9:16 */
+    width: 30vw; 
+    height: 85vh; 
+    aspect-ratio: 9 / 15;
     padding: 30px 15px;
     margin: 0 auto;
   }
 }
+
 
 @media (max-width: 1024px) {
   .container, .results-screen {
@@ -264,10 +265,11 @@ button:disabled {
   }
 }
 
+
 @media (max-width: 768px) {
   .container, .results-screen {
     width: 80%;
-    max-width: 900px;
+    max-width: 700px;
     aspect-ratio: 9 / 14;
     padding: 30px 5px 10px 5px; 
     margin: 0 auto;
@@ -278,10 +280,11 @@ button:disabled {
   }
 }
 
+
 @media (max-width: 640px) {
   .container, .results-screen {
     width: 80%;
-    max-width: 700px;
+    max-width: 600px;
     aspect-ratio: 9 / 15;
     padding: 30px 15px;
     margin: 0 auto;
@@ -297,10 +300,11 @@ button:disabled {
   }
 }
 
+
 @media (max-width: 480px) {
   .container, .results-screen {
     width: 80%;
-    max-width: 500px;
+    max-width: 460px;
     aspect-ratio: 5 / 10;
     padding: 10px 10px;
     margin: 0 auto;
@@ -315,4 +319,3 @@ button:disabled {
     font-size: 0.8rem;
   }
 }
-
