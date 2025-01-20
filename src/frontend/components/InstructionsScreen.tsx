@@ -38,7 +38,7 @@ const InstructionsScreen: React.FC = () => {
       <Slider ref={sliderRef} {...settings}>
         <div className="carousel-slide">
           <p className="instruction-text">
-            Tire a foto <b>a aproximadamente 0.5 metros</b> de distância e 
+            Tire a foto <b>a aproximadamente 1.5 metros</b> de distância e 
             posicione a <b>câmera na altura do rosto</b>.
           </p>
           <img src={distanceImage} alt="Exemplo de foto" className="instruction-image" />
