@@ -135,6 +135,21 @@ button:disabled {
 
 
 /* ================== Estilos da Tela de Instruções ================== */
+.instructions-screen {
+  /* Copiar os estilos de .container para .instructions-screen */
+  width: 400px; /* Ou outro valor consistente com a largura do container */
+  height: 500px; /* A mesma altura do container */
+  padding: 80px 40px; /* Espaçamento */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
 .instructions-screen .slick-slider {
   max-width: 100%;
   margin: 30px;
