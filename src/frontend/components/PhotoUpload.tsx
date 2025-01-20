@@ -66,6 +66,7 @@ const PhotoUpload: React.FC = () => {
         )}
       </div>
 
+
       {/* Botões de ação */}
       <div className="buttons">
         <button id="choose-file-btn" onClick={() => document.getElementById('file-input')?.click()}>
