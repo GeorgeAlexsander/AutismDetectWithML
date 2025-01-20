@@ -1,59 +1,79 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import PacmanLoader from 'react-spinners/PacmanLoader'; // Importa o PacmanLoader
 
 const Processing: React.FC = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const { faceMeshData, croppedImage } = location.state || {}; // Recebe os dados da imagem e landmarks
-  const [prediction, setPrediction] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true); // Estado de carregamento
 
   useEffect(() => {
-    const processImage = async () => {
-      if (!croppedImage) {
-        setErrorMessage('Erro: Imagem recortada não encontrada.');
-        return;
-      }
+    // Obtém os dados de faceMesh do estado da navegação
+    const faceMeshData = location.state?.faceMeshData;
 
+    // Verificação se faceMeshData existe
+    if (!faceMeshData) {
+      console.error('Dados de faceMesh ausentes');
+      navigate('/result', { state: { prediction: null, error: 'Dados de faceMesh ausentes.' } });
+      return; // Cancela a execução se faceMeshData estiver ausente
+    }
+
+    // Função para fazer a requisição à API de predição
+    const fetchPrediction = async () => {
       try {
+        setLoading(true); // Ativa o estado de carregamento
+
+        // Faz a requisição para a API no Render
         const response = await fetch('https://autismdetectwithmlapi.onrender.com/predict-autism', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: croppedImage }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ faceMesh: faceMeshData }), // Envia os dados de faceMesh para a API
         });
 
+        // Verifica se a resposta foi bem-sucedida
         if (!response.ok) {
-          throw new Error(`Erro HTTP: ${response.status}`);
+          throw new Error(`Erro HTTP: ${response.status}`); // Lança erro em caso de status diferente de 200
         }
 
-        const data = await response.json();
+        const result = await response.json();
+        console.log("Resposta da API:", result);  // Adiciona log para depuração
 
-        if (data.success) {
-          setPrediction(data.prediction); // Atualiza a predição
+        if (result.success) {
+          // Navegar para a tela de resultado com o resultado da predição
+          navigate('/result', { state: { prediction: result.prediction, confidence: result.confidence } });
         } else {
-          setErrorMessage('Não foi possível processar a imagem.');
+          console.error('Erro na predição:', result.message);
+          navigate('/result', { state: { prediction: null, error: result.message } });
         }
       } catch (error) {
-        console.error('Erro ao processar a imagem:', error);
-        setErrorMessage('Ocorreu um erro. Tente novamente.');
+        console.error('Erro ao se comunicar com a API:', error);
+        navigate('/result', { state: { prediction: null, error: 'Erro de comunicação com o servidor.' } });
+      } finally {
+        setLoading(false); // Desativa o estado de carregamento após o processamento
       }
     };
 
-    processImage();
-  }, [croppedImage]);
+    // Chama a função de predição assim que a tela carrega
+    fetchPrediction();
+
+  }, [location.state, navigate]);
 
   return (
-    <div className="container fade-in">
+    <div className="container fade-in processing-container">
       <h1>Processando...</h1>
-      {errorMessage ? (
-        <p style={{ color: 'red' }}>{errorMessage}</p>
-      ) : prediction ? (
-        <div>
-          <h2>Resultado da Análise</h2>
-          <p>Predição: {prediction}</p>
+      <div className="spinner">
+        <div className="pacman-wrapper">
+          <PacmanLoader
+            color="#1a2a6c"
+            loading={loading}  // Define o loading como dependente do estado
+            size={30}
+            speedMultiplier={0.9}
+          />
         </div>
-      ) : (
-        <p>Processando a imagem. Por favor, aguarde...</p>
-      )}
+      </div>
+      <p className="processing-text">Estamos analisando a sua foto.</p>
     </div>
   );
 };

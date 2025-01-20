@@ -23,10 +23,10 @@ const Result: React.FC = () => {
           <img src={autismHeartSymbol} alt="Símbolo do Coração do Autismo" />
 
           {/* Verifica o valor da predição */}
-          {prediction === 0 ? (
-            <p>Nosso algoritmo detectou indícios de autismo.</p>
+          {prediction === 1 ? (
+            <p>Foram identificados sinais de autismo na imagem. No entanto, essa é apenas uma triagem inicial</p>
           ) : (
-            <p>Nosso algoritmo não detectou indícios de autismo.</p>
+            <p>Não foram detectados indícios de autismo na imagem, com a ressalva de que a avaliação do aplicativo não substitui uma análise clínica profissional. </p>
           )}
 
           <p>Para uma avaliação mais completa e confiável, procure um profissional especializado.</p>
