@@ -1,79 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import PacmanLoader from 'react-spinners/PacmanLoader'; // Importa o PacmanLoader
+import { useLocation } from 'react-router-dom';
 
 const Processing: React.FC = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-  const [loading, setLoading] = useState(true); // Estado de carregamento
+  const { faceMeshData, croppedImage } = location.state || {}; // Recebe os dados da imagem e landmarks
+  const [prediction, setPrediction] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Obtém os dados de faceMesh do estado da navegação
-    const faceMeshData = location.state?.faceMeshData;
+    const processImage = async () => {
+      if (!croppedImage) {
+        setErrorMessage('Erro: Imagem recortada não encontrada.');
+        return;
+      }
 
-    // Verificação se faceMeshData existe
-    if (!faceMeshData) {
-      console.error('Dados de faceMesh ausentes');
-      navigate('/result', { state: { prediction: null, error: 'Dados de faceMesh ausentes.' } });
-      return; // Cancela a execução se faceMeshData estiver ausente
-    }
-
-    // Função para fazer a requisição à API de predição
-    const fetchPrediction = async () => {
       try {
-        setLoading(true); // Ativa o estado de carregamento
-
-        // Faz a requisição para a API no Render
         const response = await fetch('https://autismdetectwithmlapi.onrender.com/predict-autism', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ faceMesh: faceMeshData }), // Envia os dados de faceMesh para a API
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: croppedImage }),
         });
 
-        // Verifica se a resposta foi bem-sucedida
         if (!response.ok) {
-          throw new Error(`Erro HTTP: ${response.status}`); // Lança erro em caso de status diferente de 200
+          throw new Error(`Erro HTTP: ${response.status}`);
         }
 
-        const result = await response.json();
-        console.log("Resposta da API:", result);  // Adiciona log para depuração
+        const data = await response.json();
 
-        if (result.success) {
-          // Navegar para a tela de resultado com o resultado da predição
-          navigate('/result', { state: { prediction: result.prediction, confidence: result.confidence } });
+        if (data.success) {
+          setPrediction(data.prediction); // Atualiza a predição
         } else {
-          console.error('Erro na predição:', result.message);
-          navigate('/result', { state: { prediction: null, error: result.message } });
+          setErrorMessage('Não foi possível processar a imagem.');
         }
       } catch (error) {
-        console.error('Erro ao se comunicar com a API:', error);
-        navigate('/result', { state: { prediction: null, error: 'Erro de comunicação com o servidor.' } });
-      } finally {
-        setLoading(false); // Desativa o estado de carregamento após o processamento
+        console.error('Erro ao processar a imagem:', error);
+        setErrorMessage('Ocorreu um erro. Tente novamente.');
       }
     };
 
-    // Chama a função de predição assim que a tela carrega
-    fetchPrediction();
-
-  }, [location.state, navigate]);
+    processImage();
+  }, [croppedImage]);
 
   return (
-    <div className="container fade-in processing-container">
+    <div className="container fade-in">
       <h1>Processando...</h1>
-      <div className="spinner">
-        <div className="pacman-wrapper">
-          <PacmanLoader
-            color="#1a2a6c"
-            loading={loading}  // Define o loading como dependente do estado
-            size={30}
-            speedMultiplier={0.9}
-          />
+      {errorMessage ? (
+        <p style={{ color: 'red' }}>{errorMessage}</p>
+      ) : prediction ? (
+        <div>
+          <h2>Resultado da Análise</h2>
+          <p>Predição: {prediction}</p>
         </div>
-      </div>
-      <p className="processing-text">Estamos analisando a sua foto.</p>
+      ) : (
+        <p>Processando a imagem. Por favor, aguarde...</p>
+      )}
     </div>
   );
 };

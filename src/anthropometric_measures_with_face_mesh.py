@@ -98,9 +98,9 @@ def calculate_distances_3d(df: pd.DataFrame, debug: bool = False) -> pd.DataFram
         class_label = row['class']
 
         # Definindo alguns dos marcos faciais principais
-        # Tamanhos da face
-        face_width_ref1 = np.array([row['X127'], row['Y127']])
-        face_width_ref2 = np.array([row['X356'], row['Y356']])
+        # extremidades laterais da face
+        zigion_right = np.array([row['X127'], row['Y127']])
+        zigion_left = np.array([row['X356'], row['Y356']])
         # Parte Superior do rosto
         trichion = np.array([row['X10'], row['Y10']])    
         glabella = np.array([row['X9'], row['Y9']])
@@ -148,6 +148,7 @@ def calculate_distances_3d(df: pd.DataFrame, debug: bool = False) -> pd.DataFram
             "glabella_christa_philtri_right": calculate_euclidean_distance(glabella, christa_philtri_right),            
             "christa_philtri_right_alare_left": calculate_euclidean_distance(alare_left, christa_philtri_right),
             "christa_philtri_right_cheilion_left": calculate_euclidean_distance(cheilion_left, christa_philtri_right),
+            "christa_philtri_right_lower_philtrum": calculate_euclidean_distance(lower_philtrum,christa_philtri_right),
             "christa_philtri_left_cheilion_right": calculate_euclidean_distance(christa_philtri_left, cheilion_right),
             "christa_philtri_left_cheilion_right": calculate_euclidean_distance(christa_philtri_left, cheilion_right),
             "christa_philtri_left_cheilion_right": calculate_euclidean_distance(christa_philtri_left, cheilion_right),
@@ -169,7 +170,9 @@ def calculate_distances_3d(df: pd.DataFrame, debug: bool = False) -> pd.DataFram
             "frontozygomaticus_exo_cantus_right": calculate_euclidean_distance(frontozygomaticus_right, exo_canthus_right),
             "frontozygomaticus_right_cheilion_left": calculate_euclidean_distance(frontozygomaticus_right, cheilion_left),
             "face_height": calculate_euclidean_distance(trichion, menton),
-            "face_width": calculate_euclidean_distance(face_width_ref2, face_width_ref1)
+            "face_width": calculate_euclidean_distance(zigion_right, zigion_left),
+            "zigion_right_to_eye_right": calculate_euclidean_distance(zigion_right, exo_canthus_right),
+            "zigion_left_to_eye_left": calculate_euclidean_distance(zigion_left, exo_canthus_left)
         }
 
         if debug and index == 0:  # Exibir apenas para a primeira amostra se o debug estiver ativado
@@ -214,8 +217,9 @@ def main(input_csv_no_autism: str, input_csv_with_autism: str, output_csv_no_aut
     save_results_to_csv(results_with_autism, output_csv_with_autism)
 
 if __name__ == "__main__":
-    input_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_no_autism_6.0.csv"  # caminho do CSV sem autismo
-    input_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_with_autism_6.0.csv"  # caminho do CSV com autismo
-    output_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh_distances_no_autism_6.0.csv"  # caminho do CSV de saída sem autismo
-    output_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh_distances_with_autism_6.0.csv"  # caminho do CSV de saída com autismo
+    input_csv_no_autism_path = "../data/preprocessed_landmark/face_mesh/data_processing/data_M-C-A-F/face_mesh_M-C-A-F_valid_no_autism.csv"  # caminho do CSV sem autismo
+    input_csv_with_autism_path = "../data/preprocessed_landmark/face_mesh/data_processing/data_M-C-A-F/face_mesh_M-C-A-F_valid_autism.csv"  # caminho do CSV com autismo
+    output_csv_no_autism_path = "../data/preprocessed_landmark/anthropometric_measures/data_processing/data_M-C-A-F/face_mesh_distances_M-C-A-F_valid_no_autism.csv"  # caminho do CSV de saída sem autismo
+    output_csv_with_autism_path = "../data/preprocessed_landmark/anthropometric_measures/data_processing/data_M-C-A-F/face_mesh_distances_M-C-A-F_valid_autism.csv"  # caminho do CSV de saída com autismo
     main(input_csv_no_autism_path, input_csv_with_autism_path, output_csv_no_autism_path, output_csv_with_autism_path)
+    

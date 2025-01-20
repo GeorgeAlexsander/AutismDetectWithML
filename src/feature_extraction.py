@@ -342,12 +342,12 @@ def main():
     download_file(lbf_model_url, lbf_model, debug=True)
 
     # Caminho para os arquivos de saída
-    output_folder = "../data/preprocessed_landmark"
+    output_folder = "../data/preprocessed_landmark/lbf/"
     os.makedirs(output_folder, exist_ok=True)
 
     # Processar imagens de no_autism
-    output_csv_no_autism = os.path.join(output_folder, "landmarks_no_autism.csv")
-    folder_path_no_autism = "../data/raw/no_autistic"
+    output_csv_no_autism = os.path.join(output_folder, "lbf_landmarks_no_autism.csv")
+    folder_path_no_autism = "../data/raw_sem_duplicatas_face_detect/Non_Autistic"
     # Limpa o diretório deletando o CSV
     if os.path.isfile(output_csv_no_autism): 
         os.remove(output_csv_no_autism)
@@ -362,8 +362,8 @@ def main():
     )
 
     # Processar imagens de with_autism
-    output_csv_with_autism = os.path.join(output_folder, "landmarks_with_autism.csv")
-    folder_path_with_autism = "../data/raw/with_autistic"
+    output_csv_with_autism = os.path.join(output_folder, "lbf_landmarks_with_autism.csv")
+    folder_path_with_autism = "../data/raw_sem_duplicatas_face_detect/Autistic"
     # Limpa o diretório deletando o CSV
     if os.path.isfile(output_csv_with_autism): 
         os.remove(output_csv_with_autism)

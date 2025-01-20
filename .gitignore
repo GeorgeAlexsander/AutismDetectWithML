@@ -176,3 +176,7 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+/data
+/data
+/notebooks
+*.keras

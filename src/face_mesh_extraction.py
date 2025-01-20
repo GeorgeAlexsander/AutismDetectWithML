@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 FaceMesh3DExtractor
@@ -24,6 +23,11 @@ from tqdm import tqdm
 
 # Inicializa a solução Face Mesh do MediaPipe
 mp_face_mesh = mp.solutions.face_mesh
+
+# Caminhos das pastas de entrada e saída
+INPUT_FOLDER_NO_AUTISM = "../data/data_processing/data_M-C-A-F/valid/Non_Autistic"
+INPUT_FOLDER_WITH_AUTISM = "../data/data_processing/data_M-C-A-F/valid/Autistic"
+OUTPUT_FOLDER = "../data/preprocessed_landmark/face_mesh/data_processing/data_M-C-A-F"
 
 def load_image(image_path: str, debug: bool = False) -> np.ndarray:
     """
@@ -101,6 +105,7 @@ def plot_landmarks(image: np.ndarray, landmarks: list, debug: bool = False) -> N
         plt.title("Marcos Faciais 3D")
         plt.show()
 
+
 def plot_main_landmarks(image: np.ndarray, landmarks: list, debug: bool = False) -> None:
     """
     Plota os principais marcos faciais na imagem em vermelho.
@@ -135,7 +140,9 @@ def plot_main_landmarks(image: np.ndarray, landmarks: list, debug: bool = False)
         "frontozygomaticus_right": 70
     }
 
-    print(main_landmark_indices)
+    # Criar uma imagem branca com as mesmas dimensões da original
+    blank_image = np.ones_like(image) * 255  # Imagem branca (255 para cada canal RGB)
+
     # Desenhar os principais marcos na imagem
     for name, index in main_landmark_indices.items():
         if index < len(landmarks):  # Verifica se o índice está dentro do alcance
@@ -210,78 +217,40 @@ def process_images_in_folder(
         f for f in os.listdir(folder_path) if f.endswith((".jpg", ".png", ".jpeg"))
     ]
 
-    for i, image_file in enumerate(tqdm(image_files, desc=f"Processando {class_label}")):
+    for i, image_file in enumerate(tqdm(image_files)):
         image_path = os.path.join(folder_path, image_file)
-        if debug:
-            print(f"\nProcessando imagem {i + 1}: {image_file}")
-
         try:
-            # Carregar a imagem
-            image_rgb = load_image(image_path, debug=debug)
-            image_rgb_main_landmarks = load_image(image_path, debug=debug)
+            image_rgb = load_image(image_path, debug)
+            landmarks_3d = detect_face_mesh(image_rgb, debug)
 
-            # Detectar marcos faciais
-            landmarks = detect_face_mesh(image_rgb, debug=debug)
+            if landmarks_3d:
+                save_landmarks_to_csv(landmarks_3d, i + 1, class_label, output_csv, debug)
 
-            if len(landmarks) == 0:
-                if debug:
-                    print(f"Nenhuma face detectada em {image_file}. Pulando para a próxima imagem.")
-                continue
-
-            if i < 5:
-                # Plotar os landmarks
-                plot_landmarks(image_rgb, landmarks, debug=debug)
-                plot_main_landmarks(image_rgb_main_landmarks, pd.Series(landmarks), debug=debug)
-
-            # Salvar os marcos em um CSV
-            save_landmarks_to_csv(landmarks, i + 1, class_label, output_csv, debug=debug)
-
+                # Plotar a imagem com os marcos (opcional)
+                plot_landmarks(image_rgb.copy(), landmarks_3d, debug)
+                plot_main_landmarks(image_rgb.copy(), landmarks_3d, debug)
         except FileNotFoundError as e:
-            print(f"Arquivo não encontrado: {e}")
+            if debug:
+                print(e)
 
 
 def main():
     """
-    Função principal que orquestra o processo de detecção de faces e marcos faciais 3D.
-
-    Esta função realiza as seguintes etapas:
-    - Define pastas com imagens e processa as imagens para obter os marcos faciais em 3D.
-    - Os resultados são salvos em arquivos CSV.
-    
-    Returns:
-        None
+    Função principal para processar as imagens e gerar os arquivos CSV de marcos faciais.
     """
-    # Caminho para os arquivos de saída
-    output_folder = "../data/preprocessed_landmark"
-    os.makedirs(output_folder, exist_ok=True)
+    # Caminhos das pastas de entrada
+    no_autism_folder = INPUT_FOLDER_NO_AUTISM
+    with_autism_folder = INPUT_FOLDER_WITH_AUTISM
 
-    # Processar imagens de no_autism
-    output_csv_no_autism = os.path.join(output_folder, "face_mesh_no_autism_3.0.csv")
-    folder_path_no_autism = "../data/raw/processed_no_autistic"
-    
-    if os.path.isfile(output_csv_no_autism): 
-        os.remove(output_csv_no_autism)
+    # Caminho de saída para os arquivos CSV
+    output_no_autism = os.path.join(OUTPUT_FOLDER, "face_mesh_M-C-A-F_valid_no_autism.csv")
+    output_with_autism = os.path.join(OUTPUT_FOLDER, "face_mesh_M-C-A-F_valid_autism.csv")
 
-    process_images_in_folder(
-        folder_path_no_autism,
-        output_csv_no_autism,
-        class_label=0,
-        debug=False,
-    )
+    # Processa as imagens sem autismo
+    process_images_in_folder(no_autism_folder, output_no_autism, class_label=0, debug=False)
 
-    # Processar imagens de with_autism
-    output_csv_with_autism = os.path.join(output_folder, "face_mesh_with_autism_3.0.csv")
-    folder_path_with_autism = "../data/raw/processed_with_autistic"
-    
-    if os.path.isfile(output_csv_with_autism): 
-        os.remove(output_csv_with_autism)
-
-    process_images_in_folder(
-        folder_path_with_autism,
-        output_csv_with_autism,
-        class_label=1,
-        debug=False,
-    )
+    # Processa as imagens com autismo
+    process_images_in_folder(with_autism_folder, output_with_autism, class_label=1, debug=False)
 
 
 if __name__ == "__main__":
