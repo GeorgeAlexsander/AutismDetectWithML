@@ -42,11 +42,12 @@ const Processing: React.FC = () => {
 
         if (result.success) {
           // Navegar para a tela de resultado com o resultado da predição
-          navigate('/result', { state: { prediction: result.prediction, confidence: result.confidence } });
+          navigate('/result', { state: { prediction: result.predicted_class } });
         } else {
           console.error('Erro na predição:', result.message);
           navigate('/result', { state: { prediction: null, error: result.message } });
         }
+        
       } catch (error) {
         console.error('Erro ao se comunicar com a API:', error);
         navigate('/result', { state: { prediction: null, error: 'Erro de comunicação com o servidor.' } });
