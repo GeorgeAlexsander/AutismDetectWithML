@@ -135,6 +135,13 @@ button:disabled {
 
 
 /* ================== Estilos da Tela de Instruções ================== */
+.instructions-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* Espaçamento uniforme */
+}
+
 .instructions-screen .slick-slider {
   width: 100%;
   max-width: 80%;
