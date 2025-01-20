@@ -133,13 +133,13 @@ button:disabled {
     background-color: #142051;
   }
 
-
 /* ================== Estilos da Tela de Instruções ================== */
 .instructions-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between; /* Espaçamento uniforme */
+  width: 100%;
 }
 
 .instructions-screen .slick-slider {
@@ -148,13 +148,12 @@ button:disabled {
   margin: 0 auto;
 }
 
-
 /* Slide do carrossel */
 .carousel-slide {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80%; /* Faz o slide ocupar toda a largura */
+  width: 100%; /* Faz o slide ocupar toda a largura */
   height: auto; /* Ajusta a altura de forma responsiva */
   box-sizing: border-box; /* Inclui padding e bordas no cálculo de largura e altura */
 }
@@ -167,7 +166,6 @@ button:disabled {
   line-height: 1.6; /* Espaçamento entre linhas */
   max-width: 75%; /* Limita a largura do texto */
 }
-
 
 .slick-dots li button:before {
   color: #1a2a6c;
@@ -228,7 +226,6 @@ button:disabled {
 }
 
 /* ================== Estilos da Tela de Resultados ================== */
-/* ================== Estilos da Tela de Resultados ================== */
 .results-screen {
   background-color: white;
   border-radius: 12px; 
@@ -249,7 +246,6 @@ button:disabled {
   border-radius: 8px;
 }
 
-
 /* Configurações para dispositivos grandes */
 @media (max-width: 1280px) {
   .container, .results-screen, .instructions-screen {
@@ -265,7 +261,6 @@ button:disabled {
   }
 }
 
-
 @media (max-width: 1024px) {
   .container, .results-screen, .instructions-screen {
     width: 80%;
@@ -279,7 +274,6 @@ button:disabled {
     max-width: 100%;
   }
 }
-
 
 @media (max-width: 768px) {
   .container, .results-screen, .instructions-screen {
@@ -298,7 +292,6 @@ button:disabled {
     max-width: 100%;
   }
 }
-
 
 @media (max-width: 640px) {
   .container, .results-screen, .instructions-screen {
@@ -323,23 +316,19 @@ button:disabled {
   }
 }
 
-
 @media (max-width: 480px) {
   .container, .results-screen, .instructions-screen {
     width: 80%;
     max-width: 460px;
-    aspect-ratio: 5 / 10;
-    padding: 10px 10px;
+    aspect-ratio: 9 / 16;
+    padding: 30px 15px;
     margin: 0 auto;
   }
-
-  h1 {
-    font-size: 1.2rem;
+  .instruction-image {
+    max-width: 90%;
   }
-
-  button {
-    padding: 7px 15px;
-    font-size: 0.8rem;
+  h1 {
+    font-size: 1.1rem;
   }
   .instructions-screen .slick-slider {
     width: 100%;
