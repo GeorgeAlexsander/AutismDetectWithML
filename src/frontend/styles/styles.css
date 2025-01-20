@@ -141,19 +141,6 @@ button:disabled {
   margin: 0 auto;
 }
 
-.instruction-image {
-  border: 2px solid #a0c4ff;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 300px;
-  height: 250px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f8ff;
-}
-
 .carousel-slide {
   text-align: center;
   padding: auto;
@@ -269,6 +256,10 @@ button:disabled {
     padding: 30px 15px;
     margin: 0 auto;
   }
+  .instructions-screen .slick-slider {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 
@@ -279,6 +270,10 @@ button:disabled {
     aspect-ratio: 9 / 15;
     padding: 40px 20px;
     margin: 0 auto;
+  }
+  .instructions-screen .slick-slider {
+    width: 100%;
+    max-width: 100%;
   }
 }
 
@@ -294,6 +289,10 @@ button:disabled {
 
   h1 {
     font-size: 1.4rem;
+  }
+  .instructions-screen .slick-slider {
+    width: 100%;
+    max-width: 100%;
   }
 }
 
@@ -315,6 +314,10 @@ button:disabled {
     padding: 8px 18px;
     font-size: 0.85rem;
   }
+  .instructions-screen .slick-slider {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 
@@ -334,5 +337,9 @@ button:disabled {
   button {
     padding: 7px 15px;
     font-size: 0.8rem;
+  }
+  .instructions-screen .slick-slider {
+    width: 100%;
+    max-width: 100%;
   }
 }
