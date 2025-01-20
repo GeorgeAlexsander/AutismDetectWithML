@@ -180,3 +180,4 @@ dist-ssr
 /data
 /notebooks
 *.keras
+/data
