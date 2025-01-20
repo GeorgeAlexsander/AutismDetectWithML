@@ -158,7 +158,7 @@ button:disabled {
   text-align: justify;
   margin: 0px auto 30px; 
   line-height: 1.6; /* Espaçamento entre linhas */
-  max-width: 75%; /* Limita a largura do texto */
+  max-width: 65%; /* Limita a largura do texto */
 }
 
 
