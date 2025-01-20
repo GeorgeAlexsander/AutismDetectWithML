@@ -282,6 +282,7 @@ button:disabled {
   .container, .results-screen, .instructions-screen {
     width: 80%;
     max-width: 700px;
+    height: 700px;
     aspect-ratio: 9 / 14;
     padding: 30px 5px 10px 5px; 
     margin: 0 auto;
@@ -301,6 +302,7 @@ button:disabled {
   .container, .results-screen, .instructions-screen {
     width: 80%;
     max-width: 600px;
+    height: 600px;
     aspect-ratio: 9 / 15;
     padding: 30px 15px;
     margin: 0 auto;
@@ -324,6 +326,7 @@ button:disabled {
 @media (max-width: 480px) {
   .container, .results-screen, .instructions-screen {
     width: 80%;
+    height: 400px;
     max-width: 460px;
     aspect-ratio: 5 / 10;
     padding: 10px 10px;
