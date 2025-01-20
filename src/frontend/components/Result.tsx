@@ -24,12 +24,18 @@ const Result: React.FC = () => {
 
           {/* Verifica o valor da predição */}
           {prediction === 1 ? (
-            <p>Foram identificados sinais de autismo na imagem. No entanto, essa é apenas uma triagem inicial</p>
+            <p style={{ textAlign: 'justify' }}>
+              Foram identificados sinais de autismo na imagem. No entanto, essa é apenas uma triagem inicial.
+            </p>
           ) : (
-            <p>Não foram detectados indícios de autismo na imagem, com a ressalva de que a avaliação do aplicativo não substitui uma análise clínica profissional. </p>
+            <p style={{ textAlign: 'justify' }}>
+              Não foram detectados indícios de autismo na imagem, com a ressalva de que a avaliação do aplicativo não substitui uma análise clínica profissional.
+            </p>
           )}
 
-          <p>Para uma avaliação mais completa e confiável, procure um profissional especializado.</p>
+          <p style={{ textAlign: 'justify' }}>
+            Para uma avaliação mais completa e confiável, procure um profissional especializado.
+          </p>
         </>
       )}
     </div>
