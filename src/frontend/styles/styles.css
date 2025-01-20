@@ -136,8 +136,8 @@ button:disabled {
 
 /* ================== Estilos da Tela de Instruções ================== */
 .instructions-screen .slick-slider {
-  width: 90%;
-  max-width: 90%;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -147,22 +147,16 @@ button:disabled {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 90%; /* Faz o slide ocupar toda a largura */
+  width: auto; /* Faz o slide ocupar toda a largura */
   height: auto; /* Ajusta a altura de forma responsiva */
   box-sizing: border-box; /* Inclui padding e bordas no cálculo de largura e altura */
-}
-
-.instruction-image {
-  max-width: 100%; /* Garante que a imagem nunca exceda a largura do slide */
-  height: auto; /* Mantém a proporção da imagem */
-  border-radius: 8px; /* Para um estilo mais suave */
 }
 
 .instruction-text {
   font-size: 1rem;
   color: #555; 
   text-align: justify;
-  margin: 0px auto 10px; 
+  margin: 0px auto 30px; 
   line-height: 1.6; /* Espaçamento entre linhas */
   max-width: 75%; /* Limita a largura do texto */
 }
