@@ -31,7 +31,7 @@ const InstructionsScreen: React.FC = () => {
   };
 
   return (
-    <div className="container fade-in instructions-screen">
+    <div className="container fade-in">
       <h1>Instruções de Uso</h1>
       <Slider ref={sliderRef} {...settings}>
         <div className="carousel-slide">
