@@ -151,8 +151,9 @@ button:disabled {
 
 
 .instructions-screen .slick-slider {
+  width: 100%;
   max-width: 100%;
-  margin: 30px;
+  margin: 0 auto;
 }
 
 .carousel-slide {
@@ -160,11 +161,14 @@ button:disabled {
   padding: auto;
 }
 
-.carousel-slide img {
-  max-width: 60%; 
-  border-radius: 8px;
-  display: block;
-  margin: 0 auto;
+/* Slide do carrossel */
+.carousel-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Faz o slide ocupar toda a largura */
+  height: auto; /* Ajusta a altura de forma responsiva */
+  box-sizing: border-box; /* Inclui padding e bordas no cálculo de largura e altura */
 }
 
 .instruction-text {
