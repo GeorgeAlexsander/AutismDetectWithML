@@ -16,6 +16,8 @@ const InstructionsScreen: React.FC = () => {
     dots: true,
     infinite: false,
     speed: 500,
+    slidesToShow: 1, // Mostra apenas um slide por vez
+    slidesToScroll: 1, // Rola um slide por vez
     afterChange: (current: number) => setCurrentSlide(current),
   };
 
